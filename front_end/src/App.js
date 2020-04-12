@@ -1,9 +1,6 @@
 import React from 'react';
 import './bootstrap.css';
 import './App.css';
-// import Greet from "./component/Greet";
-// import Welcome from "./component/Welcome";
-// import Counter from "./component/Count";
 import Login from "./component/Login"
 import Movie from "./component/Movie"
 import Search from "./component/Search"

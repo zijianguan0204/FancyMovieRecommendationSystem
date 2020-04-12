@@ -7,11 +7,6 @@ import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 
 function Movie({match}) {
-    useEffect(()=>{
-        getMovie();
-        console.log(movie)
-    });
-
     const [movie,setMovie] = useState({
         title:'Test',
         genre:'',
@@ -25,6 +20,12 @@ function Movie({match}) {
     });
     const [isLoad,setIsLoad] = useState(true);
     const [error,setError] = useState(null);
+    const [rating,setRating] = useState(0);
+
+    useEffect(()=>{
+        console.log('effect Activate');
+        getMovie();
+    },[]);
 
     // const fetchMovie = ()=>{
     //     let addr = `https://ec2-3-101-24-190.us-west-1.compute.amazonaws.com`;
@@ -51,23 +52,25 @@ function Movie({match}) {
             `&userId=${localStorage.getItem("user_id")}`)
             .then(function (response) {
                 // handle success
-                console.log(response);
                 setMovie(response.data);
+                setRating(response.data.user_rating);
                 setIsLoad(true)
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
+                setError(error);
                 setIsLoad(true);
             })
     };
 
-    const ratingUpdate = (rating)=>{
+    const ratingUpdate = (newValue)=>{
+        setRating(newValue);
         axios.post(`http://localhost:5000/movieRating`
             , {
                 movieId: match.params.id,
                 userId: localStorage.getItem("user_id"),
-                rating:rating
+                rating:newValue
         })
             .then(function (response) {
                 console.log(response);
@@ -85,7 +88,6 @@ function Movie({match}) {
     }else if(!isLoad){
         return <div>Loading...</div>;
     }else {
-        console.log(movie);
         return (
             <div>
                 <div className="row">
@@ -105,7 +107,7 @@ function Movie({match}) {
                                 <Rating
                                     name="simple-controlled"
                                     size="large"
-                                    value={Math.max(movie.user_rating,0)}
+                                    value={Math.max(rating,0)}
                                     onChange={(event, newValue) => {
                                         ratingUpdate(newValue);
                                     }}

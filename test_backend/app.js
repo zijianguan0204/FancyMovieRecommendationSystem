@@ -17,7 +17,7 @@ let data = {
     avg_rating:4,
     released:'2012',
     description:'Harry Potter 4',
-    user_rating:-1
+    user_rating:4
 };
 
 app.get('/movie',(req,res)=>{
@@ -30,6 +30,7 @@ app.post('/movieRating',(req,res)=>{
     // console.log(req.query.movieId);
     console.log(req.body);
     data.user_rating = parseInt(req.body.rating);
+    console.log(data.user_rating);
 });
 
 app.use((req,res,next)=>{
