@@ -626,7 +626,9 @@ pre code {
 }
 
 .well{
-  padding: 3em;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  padding-left: 5em;
 }
 
 .no-gutters {

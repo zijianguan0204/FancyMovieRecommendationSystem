@@ -3,3 +3,5 @@ AWS_EC2/cmpe256.pem
 AWS_EC2/cmpe256.ppk
 AWS_EC2/README.md
 front_end/node_modules/
+node_modules/
+.idea/
