@@ -26,24 +26,24 @@ function Movie({match}) {
     const [isLoad,setIsLoad] = useState(true);
     const [error,setError] = useState(null);
 
-    const fetchMovie = ()=>{
-        let addr = `https://ec2-3-101-24-190.us-west-1.compute.amazonaws.com`;
-        fetch(
-            `http://localhost:5000/movie?` +
-            `movieId=${match.params.id}` +
-            `&userId=${localStorage.getItem("user_id")}`
-        ).then(res=>res.json())
-            .then(
-                (res)=>{
-                    setMovie(res);
-                    setIsLoad(true)
-                },
-                (err)=>{
-                    // setError(err);
-                    setIsLoad(true)
-                }
-            )
-    };
+    // const fetchMovie = ()=>{
+    //     let addr = `https://ec2-3-101-24-190.us-west-1.compute.amazonaws.com`;
+    //     fetch(
+    //         `http://localhost:5000/movie?` +
+    //         `movieId=${match.params.id}` +
+    //         `&userId=${localStorage.getItem("user_id")}`
+    //     ).then(res=>res.json())
+    //         .then(
+    //             (res)=>{
+    //                 setMovie(res);
+    //                 setIsLoad(true)
+    //             },
+    //             (err)=>{
+    //                 // setError(err);
+    //                 setIsLoad(true)
+    //             }
+    //         )
+    // };
 
     const getMovie = ()=>{
         axios.get(`http://localhost:5000/movie?` +
