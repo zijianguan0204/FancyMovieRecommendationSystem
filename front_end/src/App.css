@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+#searchMovie img{
+  width:60%;
+}
+
+@media (min-width: 960px) {
+  #searchMovie .col-md-3{
+    margin-left: 3.5em;
+  }
+  #searchMovie .col-md-3 .well{
+    height: 390px;
+    padding-left: 0em;
+    padding-right: 0em;
+    background: #1e2123;
+    margin-bottom: 1em;
+  }
+
+  #searchMovie .col-md-3 img{
+    height: 240px;
+    margin-bottom: 10px;
+  }
+}
+

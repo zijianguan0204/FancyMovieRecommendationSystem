@@ -2645,6 +2645,7 @@ textarea.form-control {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin-top: 1em;
 }
 
 .form-inline .form-check {

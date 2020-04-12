@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 let data = {
+    id:123,
     title:'HP4',
     genre:'Fantasy',
     poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg',
@@ -23,7 +24,12 @@ let data = {
 app.get('/movie',(req,res)=>{
     // console.log(req.query.movieId);
     console.log(data.user_rating);
-   res.send(data);
+    if(parseInt(req.query.movieId) === data.id){
+        res.send(data);
+    }else{
+        res.status(300).json({error:'movie not found'});
+    }
+
 });
 
 app.post('/movieRating',(req,res)=>{
@@ -31,6 +37,60 @@ app.post('/movieRating',(req,res)=>{
     console.log(req.body);
     data.user_rating = parseInt(req.body.rating);
     console.log(data.user_rating);
+});
+
+
+let movieQuery = [
+    {
+        id:123,
+        title:'HP4',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },
+    {
+        id:125,
+        title:'HP5',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:126,
+        title:'HP6',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:127,
+        title:'CB1',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:128,
+        title:'CB2',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    }
+    ,{
+        id:129,
+        title:'HP7',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:130,
+        title:'HP1',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:131,
+        title:'HP2',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    },{
+        id:132,
+        title:'HP3',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+    }
+];
+
+app.get('/movieSearch',(req,res)=>{
+    let search = req.query.search;
+    let list = [];
+    movieQuery.forEach(movie=>{
+        if(movie.title.includes(search.toUpperCase())){
+            list.push(movie);
+        }
+    });
+    res.send(list);
 });
 
 app.use((req,res,next)=>{
