@@ -2,8 +2,11 @@ import React , {useState, useEffect}from 'react';
 import '../bootstrap.css';
 import '../App.css';
 import axios from "axios";
-import {Link} from 'react-router-dom';
-import Movie from "./Movie";
+import Slick from "./Slick";
+import Tag from './Tag';
+import Rating from "./Rating";
+
+const config=require('../config/default');
 
 function Search() {
     const [search,setSearch] = useState('');
@@ -15,8 +18,9 @@ function Search() {
         console.log(movie);
     },[movie]);
 
+
     const searchMovie = ()=>{
-        axios.get(`http://localhost:5000/movieSearch?` +
+        axios.get(config.address+`/movieSearch?` +
             `search=${search}`)
             .then(function (response) {
                 // handle success
@@ -65,21 +69,16 @@ function Search() {
                 </form>
             </div>
         </div>,
-        movie.length>0?<div id='searchMovie' className='row'>{searchMovieList()}</div>:<div/>
+        movie.length>0?<div id='searchMovie' className='row'>{searchMovieList()}</div>:<div/>,
+        <div style={{marginBottom:"30px"}}>
+            <h2 style={{margin:"20px"}}>You May Like</h2>
+            <Slick/>
+        </div>,
+        <div style={{marginBottom:"30px"}}>
+            <h2 style={{margin:"20px"}}>Your Rating</h2>
+            <Rating/>
+        </div>
     ];
 }
-
-function Tag(movie) {
-    return(
-      <div className="col-md-3">
-          <div className='well text-center'>
-              <img src={movie.poster} alt={movie.title}/>
-              <h5>{movie.title}</h5>
-              <Link to={`/movie/${movie.id}`} className = 'btn btn-primary'>View Detail</Link>
-          </div>
-      </div>
-    );
-}
-
 
 export default Search;

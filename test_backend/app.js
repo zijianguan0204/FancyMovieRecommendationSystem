@@ -22,7 +22,7 @@ let data = {
 };
 
 app.get('/movie',(req,res)=>{
-    // console.log(req.query.movieId);
+    console.log(req.query);
     console.log(data.user_rating);
     if(parseInt(req.query.movieId) === data.id){
         res.send(data);
@@ -56,12 +56,12 @@ let movieQuery = [
         poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
     },{
         id:127,
-        title:'CB1',
-        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+        title:'Parites1',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/91hFpX7UCmL._SL1500_.jpg'
     },{
         id:128,
-        title:'CB2',
-        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg'
+        title:'Parites2',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/91hFpX7UCmL._SL1500_.jpg'
     }
     ,{
         id:129,
@@ -83,6 +83,7 @@ let movieQuery = [
 ];
 
 app.get('/movieSearch',(req,res)=>{
+    console.log(req.query);
     let search = req.query.search;
     let list = [];
     movieQuery.forEach(movie=>{
@@ -91,6 +92,43 @@ app.get('/movieSearch',(req,res)=>{
         }
     });
     res.send(list);
+});
+
+app.get('/movieSuggestion',(req,res)=>{
+    console.log(req.query);
+    console.log('get suggestion request');
+    res.send(movieQuery);
+});
+
+let ratingQuery = [
+    {
+        id:123,
+        title:'HP4',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg',
+        rating:4
+    },
+    {
+        id:125,
+        title:'HP5',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg',
+        rating:4
+    },{
+        id:126,
+        title:'HP6',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg',
+        rating:3
+    },{
+        id:127,
+        title:'Parites1',
+        poster:'https://images-na.ssl-images-amazon.com/images/I/91hFpX7UCmL._SL1500_.jpg',
+        rating:2
+    }
+];
+
+app.get('/moviesRating',(req,res)=>{
+    console.log(req.query);
+    console.log('get rating record request');
+    res.send(ratingQuery);
 });
 
 app.use((req,res,next)=>{
