@@ -11,7 +11,7 @@ USE movierecommender;
 
 
 -- Create Table [movies_metadata]
--- DROP TABLE IF EXISTS `movierecommender`.`movies_metadata`;
+DROP TABLE IF EXISTS `movierecommender`.`movies_metadata`;
 CREATE TABLE `movierecommender`.`movies_metadata` (
   `adult` BOOLEAN NOT NULL,
   `belongs_to_collection` varchar(510),
@@ -51,7 +51,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [ratings]
--- DROP TABLE IF EXISTS `movierecommender`.`ratings`;
+DROP TABLE IF EXISTS `movierecommender`.`ratings`;
 CREATE TABLE `movierecommender`.`ratings` (
   `userid` int NOT NULL,
   `movieid` int NOT NULL,
@@ -71,7 +71,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [ratings_small]
--- DROP TABLE IF EXISTS `movierecommender`.`ratings_small`;
+DROP TABLE IF EXISTS `movierecommender`.`ratings_small`;
 CREATE TABLE `movierecommender`.`ratings_small` (
   `userid` int NOT NULL,
   `movieid` int NOT NULL,
@@ -91,7 +91,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [credits]
--- DROP TABLE IF EXISTS `movierecommender`.`credits`;
+DROP TABLE IF EXISTS `movierecommender`.`credits`;
 CREATE TABLE `movierecommender`.`credits` (
 	`cast` text,
     `crew` text,
@@ -110,7 +110,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [keywords]
--- DROP TABLE IF EXISTS `movierecommender`.`keywords`;
+DROP TABLE IF EXISTS `movierecommender`.`keywords`;
 CREATE TABLE `movierecommender`.`keywords` (
     `id` int NOT NULL,
     `keywords` text,
@@ -128,7 +128,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [links]
--- DROP TABLE IF EXISTS `movierecommender`.`links`;
+DROP TABLE IF EXISTS `movierecommender`.`links`;
 CREATE TABLE `movierecommender`.`links` (
     `movieid` int NOT NULL,
     `imdbid` varchar(25),
@@ -147,7 +147,7 @@ IGNORE 1 ROWS;
 
 
 -- Create Table [links_small]
--- DROP TABLE IF EXISTS `movierecommender`.`links_small`;
+DROP TABLE IF EXISTS `movierecommender`.`links_small`;
 CREATE TABLE `movierecommender`.`links_small` (
     `movieid` int NOT NULL,
     `imdbid` int NOT NULL,
