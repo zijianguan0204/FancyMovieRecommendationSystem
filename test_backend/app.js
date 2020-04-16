@@ -87,7 +87,7 @@ app.get('/movieSearch',(req,res)=>{
     let search = req.query.search;
     let list = [];
     movieQuery.forEach(movie=>{
-        if(movie.title.includes(search.toUpperCase())){
+        if(movie.title.toLowerCase().includes(search.toLowerCase())){
             list.push(movie);
         }
     });
