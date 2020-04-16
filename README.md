@@ -1,4 +1,10 @@
 # FancyMovieRecommendationSystem
+- Data Import
+
+  - File movies_metadata.csv -> Table [movies_metadata]
+    1. Run script data_prep.py on the original csv file movies_metadata.csv, to generate movies_metadata_new.csv;
+    2. Save and import (using correspinding part in movierecommender.sql)
+    
 Before testing, please make sure you have yoru database set up
 For testing, please follow the steps
 1. open one terminal go to back_end folder, then "python3/python flash.py"
@@ -6,3 +12,6 @@ For testing, please follow the steps
 3. After the page pop up in your browser, change the URL to be : http://localhost:3000/movie/123, it is a testing page, you will see the Movie title as toystory has been passed to the front end and also the released date.
 
 Until now, all connections are built, we can start query data from database to the front end.
+
+
+
