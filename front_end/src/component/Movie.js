@@ -6,6 +6,8 @@ import logo from "../logo.svg"
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 
+const config=require('../config/default');
+
 function Movie({match}) {
     const [movie,setMovie] = useState({
         title:'Test',
@@ -27,27 +29,8 @@ function Movie({match}) {
         getMovie();
     },[]);
 
-    // const fetchMovie = ()=>{
-    //     let addr = `https://ec2-3-101-24-190.us-west-1.compute.amazonaws.com`;
-    //     fetch(
-    //         `http://localhost:5000/movie?` +
-    //         `movieId=${match.params.id}` +
-    //         `&userId=${localStorage.getItem("user_id")}`
-    //     ).then(res=>res.json())
-    //         .then(
-    //             (res)=>{
-    //                 setMovie(res);
-    //                 setIsLoad(true)
-    //             },
-    //             (err)=>{
-    //                 // setError(err);
-    //                 setIsLoad(true)
-    //             }
-    //         )
-    // };
-
     const getMovie = ()=>{
-        axios.get(`http://localhost:5000/movie?` +
+        axios.get(config.address+`/movie?` +
             `movieId=${match.params.id}` +
             `&userId=${localStorage.getItem("user_id")}`)
             .then(function (response) {
@@ -66,7 +49,7 @@ function Movie({match}) {
 
     const ratingUpdate = (newValue)=>{
         setRating(newValue);
-        axios.post(`http://localhost:5000/movieRating`
+        axios.post(config.address+`/movieRating`
             , {
                 movieId: match.params.id,
                 userId: localStorage.getItem("user_id"),
@@ -103,7 +86,7 @@ function Movie({match}) {
                             <li className="list-group-item"><strong>Director: </strong> {movie.director}</li>
                             <li className="list-group-item"><strong>Actors: </strong> {movie.actor}</li>
                             <Box component="fieldset" mb={3} borderColor="transparent" style={{marginTop:'2em'}}>
-                                <li style={{marginBottom:'1em'}}><strong>User Rating</strong></li>
+                                <h4 style={{marginBottom:'1em'}}><strong>User Rating</strong></h4>
                                 <Rating
                                     name="simple-controlled"
                                     size="large"
@@ -125,7 +108,7 @@ function Movie({match}) {
 
                 <div className="row">
                     <div className="well">
-                        <a href="/" className="btn btn-primary">View
+                        <a href="/" className="btn btn-primary">
                             Go Back
                         </a>
                     </div>
