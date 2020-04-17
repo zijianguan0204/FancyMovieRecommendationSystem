@@ -24,8 +24,9 @@ try:
 	connection = mysql.connector.connect(host='localhost',
 	                                     database='movierecommender',
 	                                     user='root',
-										 auth_plugin='mysql_native_password', # V
-	                                     password='leoJ0205') #zijian: password='')
+										 password='')#zijian: password='')
+										#  auth_plugin='mysql_native_password', # V
+	                                    #  password='leoJ0205') 
 	if connection.is_connected():
 	    db_Info = connection.get_server_info()
 	    print("Connected to MySQL Server version ", db_Info)
@@ -43,9 +44,9 @@ except Error as e:
 def movie():
 	
 	
-	# movieId = request.args.get('movieId')
+	movieId = request.args.get('movieId')
 	# print(movieId)
-	movieId = 862
+	# movieId = 862
 
 	sql = "SELECT original_title, genres, release_date " \
 		  "FROM movies_metadata " \
@@ -109,8 +110,8 @@ def movie():
 @app.route('/movieSearch')
 def movie_search():
 	# test
-	search_input = 'Harry Potter'
-	# search_input = request.args.get('search')
+	# search_input = 'Harry Potter'
+	search_input = request.args.get('search')
 
 	sql = "SELECT id, original_title, poster_path " \
 		  "FROM movies_metadata " \
@@ -124,5 +125,5 @@ def movie_search():
 
 
 if __name__=='__main__':
-	# zijian: app.run(debug=True,port=5001) 
-	app.run(port=5001)
+	zijian: app.run(debug=True,port=5001) 
+	# app.run(port=5001)# V
