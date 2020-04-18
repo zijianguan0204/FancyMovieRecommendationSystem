@@ -56,115 +56,54 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 -- Create Table [ratings]
--- DROP TABLE IF EXISTS `movie_Recommender`.`ratings`;
--- CREATE TABLE `movie_Recommender`.`ratings` (
---   `userid` int NOT NULL,
---   `movieid` int NOT NULL,
---   `rating` float NOT NULL,
---   `timestamp` int NOT NULL,
---   PRIMARY KEY (`userid`, `movieid`)
--- ); 
+DROP TABLE IF EXISTS `movie_Recommender`.`ratings`;
+CREATE TABLE `movie_Recommender`.`ratings` (
+  `userid` int NOT NULL,
+  `movieid` int NOT NULL,
+  `rating` varchar(255),
+  PRIMARY KEY (`userid`, `movieid`)
+); 
 
 --  Import Data from [ratings.csv] to [ratings]
 -- load data local infile 'ratings.csv' 
--- load data infile 'ratings.csv' 
--- INTO TABLE ratings  
--- FIELDS TERMINATED BY ','  
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
-
-
--- Create Table [ratings_small]
--- DROP TABLE IF EXISTS `movie_Recommender`.`ratings_small`;
--- CREATE TABLE `movie_Recommender`.`ratings_small` (
---   `userid` int NOT NULL,
---   `movieid` int NOT NULL,
---   `rating` float NOT NULL,
---   `timestamp` int NOT NULL,
---   PRIMARY KEY (`userid`, `movieid`)
--- ); 
-
---  Import Data from [ratings_small.csv] to [ratings_small]
--- load data local infile 'ratings_small.csv' 
--- load data infile 'ratings_small.csv' 
--- INTO TABLE ratings_small  
--- FIELDS TERMINATED BY ','  
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
-
+load data infile 'rating_processed.csv' 
+INTO TABLE ratings  
+FIELDS TERMINATED BY ','  
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
 
 -- Create Table [credits]
--- DROP TABLE IF EXISTS `movie_Recommender`.`credits`;
--- CREATE TABLE `movie_Recommender`.`credits` (
--- 	`cast` text,
---     `crew` text,
---     `id` int NOT NULL,
---     PRIMARY KEY (`id`)
--- );
+DROP TABLE IF EXISTS `movie_Recommender`.`cast_info`;
+CREATE TABLE `movie_Recommender`.`cast_info` (
+	`id` int,
+    `name` varchar(255),
+    PRIMARY KEY (`id`)
+);
 
 --  Import Data from [credits.csv] to [credits]
--- load data local infile 'credits.csv'
--- load data infile 'credits.csv' 
--- INTO TABLE credits 
--- FIELDS TERMINATED BY ',' 
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
+-- load data local infile 'cast_info.csv'
+load data infile 'cast_info.csv' 
+INTO TABLE cast_info 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
 
 
--- Create Table [keywords]
--- DROP TABLE IF EXISTS `movie_Recommender`.`keywords`;
--- CREATE TABLE `movie_Recommender`.`keywords` (
---     `id` int NOT NULL,
---     `keywords` text,
---     PRIMARY KEY (`id`)
--- );
+-- Create Table [crew_info]
+DROP TABLE IF EXISTS `movie_Recommender`.`crew_info`;
+CREATE TABLE `movie_Recommender`.`crew_info` (
+    `id` int NOT NULL,
+    `name` varchar(255),
+    PRIMARY KEY (`id`)
+);
 
---  Import Data from [keywords.csv] to [keywords]
--- load data local infile 'keywords.csv' 
--- load data infile 'keywords.csv' 
--- INTO TABLE keywords 
--- FIELDS TERMINATED BY ',' 
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
-
-
--- Create Table [links]
--- DROP TABLE IF EXISTS `movie_Recommender`.`links`;
--- CREATE TABLE `movie_Recommender`.`links` (
---     `movieid` int NOT NULL,
---     `imdbid` varchar(25),
---     `tmdbid` varchar(25),
---     PRIMARY KEY (`movieid`)
--- );
-
---  Import Data from [links.csv] to [links]
--- load data local infile 'links.csv' 
--- load data infile 'links.csv' 
--- INTO TABLE links 
--- FIELDS TERMINATED BY ',' 
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
-
-
--- Create Table [links_small]
--- DROP TABLE IF EXISTS `movie_Recommender`.`links_small`;
--- CREATE TABLE `movie_Recommender`.`links_small` (
---     `movieid` int NOT NULL,
---     `imdbid` int NOT NULL,
---     `tmdbid` int NOT NULL,
---     PRIMARY KEY (`movieid`, `imdbid`, `tmdbid`)
--- );
-
---  Import Data from [links_small.csv] to [links_small]
--- load data local infile 'links_small.csv'
--- load data infile 'links_small.csv' 
--- INTO TABLE links_small 
--- FIELDS TERMINATED BY ',' 
--- ENCLOSED BY '"' 
--- LINES TERMINATED BY '\n' 
--- IGNORE 1 ROWS;
+--  Import Data from [crew_info.csv] to [crew_info]
+-- load data local infile 'crew_info.csv' 
+load data infile 'crew_info.csv' 
+INTO TABLE crew_info 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
