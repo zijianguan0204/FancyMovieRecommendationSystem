@@ -238,7 +238,6 @@ id,genre
 19738,Animation
 44756,Animation
 919,Animation
-23305,Animation
 11430,Animation
 55931,Animation
 12140,Animation
@@ -678,7 +677,6 @@ id,genre
 133931,Animation
 109451,Animation
 51985,Animation
-152795,Animation
 137193,Animation
 19594,Animation
 200481,Animation
@@ -1874,10 +1872,8 @@ id,genre
 133131,Animation
 24101,Animation
 26539,Animation
-10991,Animation
 22643,Animation
 13683,Animation
-12600,Animation
 34065,Animation
 308794,Animation
 461615,Animation
@@ -7219,7 +7215,6 @@ id,genre
 13585,Comedy
 43790,Comedy
 32552,Comedy
-13209,Comedy
 40264,Comedy
 28938,Comedy
 4204,Comedy
@@ -9466,7 +9461,6 @@ id,genre
 84111,Comedy
 37128,Comedy
 77067,Comedy
-11115,Comedy
 42734,Comedy
 22515,Comedy
 171274,Comedy
@@ -10574,7 +10568,6 @@ id,genre
 90806,Comedy
 10580,Comedy
 87122,Comedy
-168538,Comedy
 31281,Comedy
 110624,Comedy
 28263,Comedy
@@ -11984,7 +11977,6 @@ id,genre
 199584,Comedy
 33106,Comedy
 37502,Comedy
-4912,Comedy
 45407,Comedy
 194523,Comedy
 257445,Comedy
@@ -13501,7 +13493,6 @@ id,genre
 398633,Comedy
 50717,Comedy
 253277,Comedy
-97995,Comedy
 398137,Comedy
 89984,Comedy
 171346,Comedy
@@ -15002,7 +14993,6 @@ id,genre
 417320,Comedy
 70573,Comedy
 49295,Comedy
-265189,Comedy
 373247,Comedy
 277839,Comedy
 454787,Comedy
@@ -17171,7 +17161,6 @@ id,genre
 50479,Family
 13311,Family
 44133,Family
-15028,Family
 299400,Family
 14561,Family
 330127,Family
@@ -17790,12 +17779,10 @@ id,genre
 104297,Family
 133131,Family
 24101,Family
-10991,Family
 22643,Family
 24794,Family
 20755,Family
 13683,Family
-12600,Family
 34065,Family
 308794,Family
 381507,Family
@@ -18854,7 +18841,6 @@ id,genre
 2899,Adventure
 40096,Adventure
 36243,Adventure
-23305,Adventure
 10077,Adventure
 11774,Adventure
 15370,Adventure
@@ -19723,7 +19709,6 @@ id,genre
 63686,Adventure
 68721,Adventure
 166076,Adventure
-77221,Adventure
 57849,Adventure
 2966,Adventure
 64272,Adventure
@@ -20687,7 +20672,6 @@ id,genre
 55765,Adventure
 32932,Adventure
 10257,Adventure
-15028,Adventure
 33106,Adventure
 257445,Adventure
 233639,Adventure
@@ -20948,7 +20932,6 @@ id,genre
 334533,Adventure
 122293,Adventure
 291805,Adventure
-99080,Adventure
 339526,Adventure
 87061,Adventure
 39301,Adventure
@@ -21296,8 +21279,6 @@ id,genre
 150010,Adventure
 9627,Adventure
 366170,Adventure
-10991,Adventure
-12600,Adventure
 34065,Adventure
 335988,Adventure
 77512,Adventure
@@ -22507,7 +22488,6 @@ id,genre
 80518,Fantasy
 31221,Fantasy
 42527,Fantasy
-119916,Fantasy
 44909,Fantasy
 181649,Fantasy
 49524,Fantasy
@@ -23320,7 +23300,6 @@ id,genre
 271706,Fantasy
 26945,Fantasy
 283366,Fantasy
-298721,Fantasy
 406429,Fantasy
 47234,Fantasy
 64961,Fantasy
@@ -23598,8 +23577,6 @@ id,genre
 127144,Fantasy
 382217,Fantasy
 24101,Fantasy
-10991,Fantasy
-12600,Fantasy
 34065,Fantasy
 51273,Fantasy
 60189,Fantasy
@@ -23991,7 +23968,6 @@ id,genre
 31017,Romance
 109614,Romance
 60082,Romance
-105045,Romance
 53023,Romance
 11239,Romance
 2058,Romance
@@ -26815,7 +26791,6 @@ id,genre
 19939,Romance
 79924,Romance
 68987,Romance
-22649,Romance
 31561,Romance
 14766,Romance
 36731,Romance
@@ -28261,7 +28236,6 @@ id,genre
 48645,Romance
 156201,Romance
 45020,Romance
-69234,Romance
 288521,Romance
 97732,Romance
 51791,Romance
@@ -29035,7 +29009,6 @@ id,genre
 124294,Romance
 284063,Romance
 14561,Romance
-4912,Romance
 45407,Romance
 329829,Romance
 21459,Romance
@@ -29659,7 +29632,6 @@ id,genre
 188183,Romance
 395181,Romance
 319017,Romance
-99080,Romance
 332872,Romance
 339397,Romance
 147367,Romance
@@ -31173,7 +31145,6 @@ id,genre
 24645,Drama
 1811,Drama
 109614,Drama
-105045,Drama
 53023,Drama
 64802,Drama
 11239,Drama
@@ -35263,7 +35234,6 @@ id,genre
 17985,Drama
 21210,Drama
 21644,Drama
-5511,Drama
 18491,Drama
 11854,Drama
 33491,Drama
@@ -35345,7 +35315,6 @@ id,genre
 11178,Drama
 125842,Drama
 100973,Drama
-23305,Drama
 16184,Drama
 53244,Drama
 36353,Drama
@@ -36927,7 +36896,6 @@ id,genre
 4629,Drama
 15361,Drama
 5353,Drama
-14788,Drama
 63607,Drama
 13072,Drama
 42170,Drama
@@ -38470,7 +38438,6 @@ id,genre
 17988,Drama
 19587,Drama
 68987,Drama
-22649,Drama
 31561,Drama
 1912,Drama
 14766,Drama
@@ -38843,7 +38810,6 @@ id,genre
 133792,Drama
 33481,Drama
 43642,Drama
-13209,Drama
 119764,Drama
 40985,Drama
 268021,Drama
@@ -41286,7 +41252,6 @@ id,genre
 174321,Drama
 179154,Drama
 91073,Drama
-77221,Drama
 20181,Drama
 156306,Drama
 103731,Drama
@@ -41310,7 +41275,6 @@ id,genre
 14921,Drama
 94901,Drama
 77439,Drama
-109962,Drama
 101297,Drama
 72525,Drama
 39889,Drama
@@ -41408,7 +41372,6 @@ id,genre
 180050,Drama
 83342,Drama
 117251,Drama
-119916,Drama
 139329,Drama
 25789,Drama
 117377,Drama
@@ -41663,7 +41626,6 @@ id,genre
 159009,Drama
 29368,Drama
 109091,Drama
-152795,Drama
 18167,Drama
 29941,Drama
 291907,Drama
@@ -42125,7 +42087,6 @@ id,genre
 45007,Drama
 31214,Drama
 109891,Drama
-25541,Drama
 80992,Drama
 71996,Drama
 39211,Drama
@@ -42334,7 +42295,6 @@ id,genre
 202238,Drama
 131366,Drama
 50379,Drama
-110428,Drama
 100271,Drama
 157851,Drama
 1731,Drama
@@ -42856,7 +42816,6 @@ id,genre
 20342,Drama
 98344,Drama
 91316,Drama
-11115,Drama
 62804,Drama
 202744,Drama
 73091,Drama
@@ -43510,7 +43469,6 @@ id,genre
 45020,Drama
 52251,Drama
 53950,Drama
-69234,Drama
 24059,Drama
 216457,Drama
 93892,Drama
@@ -44464,7 +44422,6 @@ id,genre
 73612,Drama
 10580,Drama
 167951,Drama
-168538,Drama
 5896,Drama
 40927,Drama
 70903,Drama
@@ -44634,7 +44591,6 @@ id,genre
 265741,Drama
 95493,Drama
 46915,Drama
-42495,Drama
 299353,Drama
 128043,Drama
 185843,Drama
@@ -44858,7 +44814,6 @@ id,genre
 61803,Drama
 236395,Drama
 52051,Drama
-132641,Drama
 47590,Drama
 165567,Drama
 334132,Drama
@@ -46310,7 +46265,6 @@ id,genre
 33106,Drama
 49095,Drama
 162006,Drama
-4912,Drama
 194523,Drama
 328869,Drama
 343843,Drama
@@ -48207,7 +48161,6 @@ id,genre
 388403,Drama
 48339,Drama
 36090,Drama
-99080,Drama
 94643,Drama
 376916,Drama
 362699,Drama
@@ -48659,7 +48612,6 @@ id,genre
 381418,Drama
 296865,Drama
 394051,Drama
-298721,Drama
 382399,Drama
 247414,Drama
 394170,Drama
@@ -50495,7 +50447,6 @@ id,genre
 96823,Drama
 56841,Drama
 51507,Drama
-265189,Drama
 206277,Drama
 92108,Drama
 36415,Drama
@@ -52256,7 +52207,6 @@ id,genre
 37712,Action
 14809,Action
 33625,Action
-23305,Action
 21707,Action
 4612,Action
 36222,Action
@@ -54220,7 +54170,6 @@ id,genre
 21930,Action
 16692,Action
 16693,Action
-18440,Action
 75629,Action
 41831,Action
 22899,Action
@@ -56412,7 +56361,6 @@ id,genre
 155217,Action
 291805,Action
 370464,Action
-99080,Action
 382088,Action
 254420,Action
 375599,Action
@@ -57100,7 +57048,6 @@ id,genre
 436932,Action
 434119,Action
 443700,Action
-10991,Action
 335988,Action
 77512,Action
 68623,Action
@@ -58348,7 +58295,6 @@ id,genre
 13428,Crime
 67899,Crime
 9597,Crime
-5511,Crime
 39927,Crime
 2332,Crime
 54003,Crime
@@ -58703,7 +58649,6 @@ id,genre
 4413,Crime
 6973,Crime
 2252,Crime
-14788,Crime
 42170,Crime
 10425,Crime
 20942,Crime
@@ -60705,7 +60650,6 @@ id,genre
 72074,Crime
 262137,Crime
 45303,Crime
-4912,Crime
 127849,Crime
 194523,Crime
 254155,Crime
@@ -63331,7 +63275,6 @@ id,genre
 17985,Thriller
 54860,Thriller
 9597,Thriller
-5511,Thriller
 49745,Thriller
 12619,Thriller
 9011,Thriller
@@ -64160,7 +64103,6 @@ id,genre
 44052,Thriller
 1977,Thriller
 13510,Thriller
-141971,Thriller
 24194,Thriller
 14851,Thriller
 4959,Thriller
@@ -64788,7 +64730,6 @@ id,genre
 38050,Thriller
 27582,Thriller
 46529,Thriller
-141971,Thriller
 37714,Thriller
 56092,Thriller
 40655,Thriller
@@ -67577,7 +67518,6 @@ id,genre
 24821,Thriller
 14660,Thriller
 20458,Thriller
-15028,Thriller
 36681,Thriller
 121491,Thriller
 55758,Thriller
@@ -67621,7 +67561,6 @@ id,genre
 49095,Thriller
 40025,Thriller
 45303,Thriller
-4912,Thriller
 127849,Thriller
 254155,Thriller
 280612,Thriller
@@ -71351,7 +71290,6 @@ id,genre
 140750,Horror
 30877,Horror
 21930,Horror
-18440,Horror
 134366,Horror
 214597,Horror
 22899,Horror
@@ -71864,7 +71802,6 @@ id,genre
 128598,Horror
 52251,Horror
 53950,Horror
-69234,Horror
 44811,Horror
 117120,Horror
 21795,Horror
@@ -76638,7 +76575,6 @@ id,genre
 68724,Science Fiction
 174772,Science Fiction
 107985,Science Fiction
-119916,Science Fiction
 93649,Science Fiction
 30654,Science Fiction
 45556,Science Fiction
@@ -76698,7 +76634,6 @@ id,genre
 115442,Science Fiction
 75735,Science Fiction
 82407,Science Fiction
-152795,Science Fiction
 43115,Science Fiction
 3160,Science Fiction
 39468,Science Fiction
@@ -76728,7 +76663,6 @@ id,genre
 51859,Science Fiction
 2072,Science Fiction
 21930,Science Fiction
-18440,Science Fiction
 75629,Science Fiction
 22899,Science Fiction
 152601,Science Fiction
@@ -77438,7 +77372,6 @@ id,genre
 254526,Science Fiction
 10257,Science Fiction
 239853,Science Fiction
-15028,Science Fiction
 335866,Science Fiction
 68252,Science Fiction
 352128,Science Fiction
@@ -78132,7 +78065,6 @@ id,genre
 459802,Science Fiction
 437311,Science Fiction
 24101,Science Fiction
-12600,Science Fiction
 461615,Science Fiction
 335988,Science Fiction
 347855,Science Fiction
@@ -79011,7 +78943,6 @@ id,genre
 12994,Mystery
 6973,Mystery
 2252,Mystery
-14788,Mystery
 4566,Mystery
 4771,Mystery
 13197,Mystery
@@ -79085,7 +79016,6 @@ id,genre
 16137,Mystery
 44052,Mystery
 1977,Mystery
-141971,Mystery
 38087,Mystery
 29117,Mystery
 15159,Mystery
@@ -79270,7 +79200,6 @@ id,genre
 81217,Mystery
 54186,Mystery
 33228,Mystery
-141971,Mystery
 22620,Mystery
 47533,Mystery
 45612,Mystery
@@ -81216,7 +81145,6 @@ id,genre
 35939,War
 57124,War
 17988,War
-22649,War
 55236,War
 4461,War
 21345,War
@@ -82188,7 +82116,6 @@ id,genre
 37712,Foreign
 35848,Foreign
 2111,Foreign
-23305,Foreign
 36222,Foreign
 36353,Foreign
 97754,Foreign
@@ -82473,7 +82400,6 @@ id,genre
 105347,Foreign
 54182,Foreign
 50338,Foreign
-13209,Foreign
 8886,Foreign
 27442,Foreign
 41486,Foreign
@@ -82960,7 +82886,6 @@ id,genre
 88744,Foreign
 26569,Foreign
 132128,Foreign
-42495,Foreign
 39992,Foreign
 48846,Foreign
 26687,Foreign
@@ -84636,7 +84561,6 @@ id,genre
 43866,Music
 279914,Music
 48645,Music
-69234,Music
 43311,Music
 90582,Music
 256503,Music
@@ -86631,7 +86555,6 @@ id,genre
 388046,Documentary
 51795,Documentary
 104739,Documentary
-84198,Documentary
 159004,Documentary
 159154,Documentary
 106049,Documentary
@@ -87925,7 +87848,6 @@ id,genre
 31237,Documentary
 103851,Documentary
 267310,Documentary
-159849,Documentary
 61662,Documentary
 150049,Documentary
 322317,Documentary
@@ -90320,7 +90242,6 @@ id,genre
 23816,TV Movie
 1163,TV Movie
 21533,TV Movie
-69234,TV Movie
 75826,TV Movie
 44811,TV Movie
 53085,TV Movie
