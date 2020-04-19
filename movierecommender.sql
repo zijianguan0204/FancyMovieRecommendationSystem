@@ -36,7 +36,6 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n' 
 IGNORE 1 ROWS;
 
-
 -- Create Table [movie_genre]
 DROP TABLE IF EXISTS `movie_Recommender`.`movie_genre`;
 CREATE TABLE `movie_Recommender`.`movie_genre` (
@@ -103,6 +102,41 @@ CREATE TABLE `movie_Recommender`.`crew_info` (
 -- load data local infile 'crew_info.csv' 
 load data infile 'crew_info.csv' 
 INTO TABLE crew_info 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
+
+-- Create Table [movie_cast]
+DROP TABLE IF EXISTS `movie_Recommender`.`movie_cast`;
+CREATE TABLE `movie_Recommender`.`movie_cast` (
+    `cast_id` int NOT NULL,
+    `movie_id` varchar(255),
+    PRIMARY KEY (`cast_id`, `movie_id`)
+);
+
+--  Import Data from [movie_cast.csv] to [movie_cast]
+-- load data local infile 'movie_cast.csv' 
+load data infile 'movie_cast.csv' 
+INTO TABLE movie_cast 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
+
+-- Create Table [movie_cast]
+DROP TABLE IF EXISTS `movie_Recommender`.`movie_crew`;
+CREATE TABLE `movie_Recommender`.`movie_crew` (
+    `crew_id` int NOT NULL,
+    `movie_id` varchar(255),
+    `job` varchar(255),
+    PRIMARY KEY (`movie_id`, `crew_id`, `job`)
+);
+
+--  Import Data from [movie_crew.csv] to [movie_crew]
+-- load data local infile 'movie_crew.csv' 
+load data infile 'movie_crew.csv' 
+INTO TABLE movie_crew 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
