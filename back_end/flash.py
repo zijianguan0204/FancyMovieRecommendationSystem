@@ -3,30 +3,18 @@ import mysql.connector
 import ast
 from mysql.connector import Error
 import json
+from movie_recommender import movie_recommender
+
 app = Flask(__name__)
 
-# posts = [
-# 	{
-# 		'author': 'zhadanren',
-# 		'title' : 'Blog post 1',
-# 		'content': 'something...',
-# 		'date_posted' : 'date here....'	
-# 	},
-# 	{
-# 		'author': 'zhadanren',
-# 		'title' : 'Blog post 1',
-# 		'content': 'something...',
-# 		'date_posted' : 'date here....'	
-# 	}
-# ]
-
+# Connect to Database
 try:
 	connection = mysql.connector.connect(host='localhost',
-	                                     database='movierecommender',
+	                                     database='movie_Recommender',
 	                                     user='root',
-										 password='')#zijian: password='')
+										 password='') #zijian
 										#  auth_plugin='mysql_native_password', # V
-	                                    #  password='leoJ0205') 
+	                                    #  password='leoJ0205') # V
 	if connection.is_connected():
 	    db_Info = connection.get_server_info()
 	    print("Connected to MySQL Server version ", db_Info)
@@ -35,95 +23,206 @@ try:
 except Error as e:
     print("Error while connecting to MySQL", e)
 
-
-# @app.route('/')
-# def hello_world():
-#     return render_template('home.html', posts = posts)
-
+# Get movie detail according to movie ID and user ID
 @app.route('/movie')
 def movie():
 	
 	
 	movieId = request.args.get('movieId')
+	userId = request.args.get('userId')
 	# print(movieId)
+	# print(userId)
+	# test
 	# movieId = 862
+	# userId = 2103
 
-	sql = "SELECT original_title, genres, release_date " \
+	# initialization
+	id = ''
+	title = ''
+	poster = ''
+	release_date = ''
+	description = ''
+	genres_str = ''
+	ave_rating = ''
+	actors_str = ''
+	director_str = ''
+
+	# get movie meta info
+	sql = "SELECT id, title, poster_path, release_date, overview " \
 		  "FROM movies_metadata " \
 		  "WHERE id = %s"
-	cursor.execute(sql, (movieId,)) #sql query..... 
+	cursor.execute(sql, (movieId,)) 
 	row = cursor.fetchone()
-	title = row[0]
-	genres_str = row[1]
-	genres_list = ast.literal_eval(genres_str)
-	release_date = row[2]
+	if row != None:
+		id = row[0]
+		title = row[1]
+		poster = row[2]
+		release_date = row[3]
+		description = row[4]
 
-	# Generate genres to display
-	genres = ''
-	for i in genres_list:
-		genres += ' '
-		genres += i['name']
+	# get movie genres
+	sql = "SELECT genre " \
+		  "FROM movie_genre " \
+		  "WHERE id = %s"
+	cursor.execute(sql, (movieId,))
+	genres_dr= cursor.fetchall()
+	if genres_dr != None:
+		for genre in genres_dr:
+			genres_str += genre[0] + ','
+		genres_str = genres_str[:-1]
 
-	# zijian:
-	# title_sql = "SELECT DISTINCT original_title FROM movies_metadata WHERE id = %s"
-	# cursor.execute(title_sql, (movieId,)) #sql query..... 
-	# row = cursor.fetchone()
-	# title = row[0]
+	# get average rating
+	sql = "SELECT AVG(rating) AS ave_rating " \
+		  "FROM ratings " \
+		  "WHERE movieid = %s"
+	cursor.execute(sql, (movieId,))
+	ave_rating_dr = cursor.fetchone()
+	ave_rating = ave_rating_dr[0]
 
-	# genres_sql = "SELECT DISTINCT genres FROM movies_metadata WHERE id = %s"
-	# cursor.execute(genres_sql, (movieId,)) #sql query..... 
-	# row = cursor.fetchone()
-	# genres = row[0]
-	# print(genres)
-	# genres_json = json.dumps(genres)
-	# print(genres_json)
-	# # genres_string = json.loads(genres)
-	# # genres_json = json.dumps(genres_string)
-	# # name = genres_json["name"]
+	# get user rating
+	sql = "SELECT rating " \
+		  "FROM ratings " \
+		  "WHERE movieid = %s " \
+		  "AND userid = %s"
+	cursor.execute(sql, (movieId, userId,))
+	user_rating_dr = cursor.fetchone()
+	user_rating = None if (user_rating_dr == None) else user_rating_dr[0][:-1] 
 
-	# release_date_sql = "SELECT DISTINCT release_date FROM movies_metadata WHERE id = %s"
-	# cursor.execute(release_date_sql, (movieId,)) #sql query..... 
-	# row = cursor.fetchone()
-	# release_date = row[0]
+	# get actors (cast)
+	sql = "SELECT name " \
+		  "FROM movie_Recommender.cast_info " \
+		  "INNER JOIN movie_cast " \
+		  "ON cast_info.id = movie_cast.cast_id " \
+		  "WHERE movie_id = %s"
+	cursor.execute(sql, (movieId,))
+	actors_dr = cursor.fetchall()
+	if actors_dr != None:
+		for actor in actors_dr:
+			actors_str += actor[0][:-1] + ','
+			# actors_str += actor[0] + ','
+		actors_str = actors_str[:-1]
 
-	# # title_sql = "SELECT DISTINCT original_title FROM movies_metadata WHERE id = %s"
-	# # cursor.execute(sql, (movieId,)) #sql query..... 
-	# # row = cursor.fetchone()
-	# # title = row[0]
-	
+	# get director (crew)
+	sql = "SELECT name " \
+		  "FROM crew_info " \
+		  "INNER JOIN movie_crew " \
+		  "ON crew_info.id = movie_crew.crew_id " \
+		  "WHERE movie_id = %s " \
+		  "AND upper(job) = upper('director')"
+	cursor.execute(sql, (movieId,))
+	director_dr = cursor.fetchall()
+	if director_dr != None:
+		for director in director_dr:
+			director_str += director[0][:-1] + ','
+			# director_str += director[0] + ','
+		director_str = director_str[:-1]
 
 	data = {
-    'title':title,
-    'genre':genres.lstrip(),
-    'poster':'https://images-na.ssl-images-amazon.com/images/I/517A4QTR22L._SY445_.jpg',
-    'director': 'Someone...',
-    'actor':'Emma Watson',
-    'avg_rating':4,
-    'released':release_date,
-    'description':'Harry Potter 4',
-    'user_rating':-1}
-	
+		'id':id,
+		'title':title,
+		'genre':genres_str,
+		'poster':poster,
+		'director': director_str,
+		'actor':actors_str,
+		'avg_rating':ave_rating,
+		'released':release_date,
+		'description':description,
+		'user_rating':user_rating
+		}
+
+	cursor.close()
+
 	response = jsonify(data)
 	response.headers.add('Access-Control-Allow-Origin', '*')
 	return response
 
+# Search for movie(s)
 @app.route('/movieSearch')
 def movie_search():
 	# test
 	# search_input = 'Harry Potter'
 	search_input = request.args.get('search')
 
-	sql = "SELECT id, original_title, poster_path " \
+	sql = "SELECT id, title, poster_path " \
 		  "FROM movies_metadata " \
-		  "WHERE upper(original_title) like concat(upper(%s), '%')"
+		  "WHERE upper(title) like concat(upper(%s), '%')"
 	cursor.execute(sql, (search_input.strip(),)) 
 	rows = cursor.fetchall()
 
-	response = jsonify(rows)
+	cursor.close()	
+
+	x = {} # each row
+	result = []
+	for row in rows:
+		x['id'] = row[0]
+		x['title'] = row[1]
+		x['poster'] = row[2]
+		result.append(x)
+	# response = jsonify(dict(rows))
+	response = jsonify(result)
 	response.headers.add('Access-Control-Allow-Origin', '*')
 	return response
 
+# Get user's rating history
+@app.route('/moviesRating')
+def user_rating_history():
+	# test
+	# userid = 2103
+	userid = request.args.get('userId')
 
+	sql = "SELECT id, title, poster_path, rating " \
+		  "FROM movie_Recommender.ratings " \
+		  "INNER JOIN movies_metadata " \
+		  "ON ratings.movieid = movies_metadata.id " \
+		  "WHERE userid = %s"
+	cursor.execute(sql, (userid,)) 
+	rows = cursor.fetchall()
+
+	cursor.close()	
+
+	x = {} # each row
+	result = []
+	for row in rows:
+		x['id'] = row[0]
+		x['title'] = row[1]
+		x['poster'] = row[2]
+		x['rating'] = row[3][:-1]
+		result.append(x)
+	# response = jsonify(dict(rows))
+	response = jsonify(result)
+	response.headers.add('Access-Control-Allow-Origin', '*')
+	return response
+
+# Add/update user's new rating
+@app.route('/moviesRating', methods = ['POST'])
+def user_rating_upd():
+	if request.headers['CONTENT_TYPE'] == 'application/json':
+		movieId = request.json['movieId']
+		userId = request.json['userId']
+		rating = request.json['rating']
+
+		sql = "INSERT INTO ratings (movieid, userid, rating) " \
+			f"VALUES ({movieId}, {userId}, {rating}) " \
+			f"ON DUPLICATE KEY UPDATE rating = {rating}"
+		try:
+			cursor.execute(sql)
+			connection.commit()
+		except Error as e:
+			print("Error while executing SQL", e)
+
+		response = jsonify("")
+		response.headers.add('Access-Control-Allow-Origin', '*')
+		return response
+
+# Get a list of recommended movies
+@app.route('/movieSuggestion')
+def movie_suggestion():
+	# test
+	# userid = 2103
+	userid = request.args.get('userId')
+
+	return movie_recommender(userid)
+    	
 if __name__=='__main__':
-	zijian: app.run(debug=True,port=5001) 
-	# app.run(port=5001)# V
+	app.run(debug=True) # zijian
+	# app.run(port=5001)
