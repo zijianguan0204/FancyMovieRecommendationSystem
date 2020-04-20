@@ -12,9 +12,8 @@ try:
 	connection = mysql.connector.connect(host='localhost',
 	                                     database='movie_Recommender',
 	                                     user='root',
-										 password='') #zijian
-										#  auth_plugin='mysql_native_password', # V
-	                                    #  password='leoJ0205') # V
+										 auth_plugin='mysql_native_password', # V
+	                                     password='leoJ0205') #zijian: password='')
 	if connection.is_connected():
 	    db_Info = connection.get_server_info()
 	    print("Connected to MySQL Server version ", db_Info)
@@ -28,13 +27,12 @@ except Error as e:
 def movie():
 	
 	
-	movieId = request.args.get('movieId')
-	userId = request.args.get('userId')
+	# movieId = request.args.get('movieId')
+	# userId = request.args.get('userId')
 	# print(movieId)
 	# print(userId)
-	# test
-	# movieId = 862
-	# userId = 2103
+	movieId = 862
+	userId = 2103
 
 	# initialization
 	id = ''
@@ -60,7 +58,7 @@ def movie():
 		release_date = row[3]
 		description = row[4]
 		ave_rating = str(row[5])
-		
+
 	# get movie genres
 	sql = "SELECT genre " \
 		  "FROM movie_genre " \
@@ -73,12 +71,12 @@ def movie():
 		genres_str = genres_str[:-1]
 
 	# get average rating
-	sql = "SELECT AVG(rating) AS ave_rating " \
-		  "FROM ratings " \
-		  "WHERE movieid = %s"
-	cursor.execute(sql, (movieId,))
-	ave_rating_dr = cursor.fetchone()
-	ave_rating = ave_rating_dr[0]
+	# sql = "SELECT AVG(rating) AS ave_rating " \
+	# 	  "FROM ratings " \
+	# 	  "WHERE movieid = %s"
+	# cursor.execute(sql, (movieId,))
+	# ave_rating_dr = cursor.fetchone()
+	# ave_rating = ave_rating_dr[0]
 
 	# get user rating
 	sql = "SELECT rating " \
@@ -141,8 +139,8 @@ def movie():
 @app.route('/movieSearch')
 def movie_search():
 	# test
-	# search_input = 'Harry Potter'
-	search_input = request.args.get('search')
+	search_input = 'Harry Potter'
+	# search_input = request.args.get('search')
 
 	sql = "SELECT id, title, poster_path " \
 		  "FROM movies_metadata " \
@@ -168,8 +166,8 @@ def movie_search():
 @app.route('/moviesRating')
 def user_rating_history():
 	# test
-	# userid = 2103
-	userid = request.args.get('userId')
+	userid = 2103
+	# userid = request.args.get('userId')
 
 	sql = "SELECT id, title, poster_path, rating " \
 		  "FROM movie_Recommender.ratings " \
@@ -219,11 +217,11 @@ def user_rating_upd():
 @app.route('/movieSuggestion')
 def movie_suggestion():
 	# test
-	# userid = 2103
-	userid = request.args.get('userId')
+	userid = 2103
+	# userid = request.args.get('userId')
 
 	return movie_recommender(userid)
     	
 if __name__=='__main__':
-	app.run(debug=True) # zijian
-	# app.run(port=5001)
+	# zijian: app.run(debug=True,port=5001) 
+	app.run(port=5001)
