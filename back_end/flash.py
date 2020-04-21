@@ -60,7 +60,7 @@ def movie():
 		release_date = row[3]
 		description = row[4]
 		ave_rating = str(row[5])
-		
+
 	# get movie genres
 	sql = "SELECT genre " \
 		  "FROM movie_genre " \
@@ -73,12 +73,12 @@ def movie():
 		genres_str = genres_str[:-1]
 
 	# get average rating
-	sql = "SELECT AVG(rating) AS ave_rating " \
-		  "FROM ratings " \
-		  "WHERE movieid = %s"
-	cursor.execute(sql, (movieId,))
-	ave_rating_dr = cursor.fetchone()
-	ave_rating = ave_rating_dr[0]
+	# sql = "SELECT AVG(rating) AS ave_rating " \
+	# 	  "FROM ratings " \
+	# 	  "WHERE movieid = %s"
+	# cursor.execute(sql, (movieId,))
+	# ave_rating_dr = cursor.fetchone()
+	# ave_rating = ave_rating_dr[0]
 
 	# get user rating
 	sql = "SELECT rating " \
