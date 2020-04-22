@@ -21,7 +21,7 @@ posts = [
 
 try:
 	connection = mysql.connector.connect(host='localhost',
-	                                     database='movierecommender',
+	                                     database='movie_recommender',
 	                                     user='root',
 	                                     password='')
 	if connection.is_connected():
