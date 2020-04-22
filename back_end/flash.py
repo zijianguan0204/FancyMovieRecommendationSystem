@@ -27,7 +27,7 @@ except Error as e:
 @app.route('/movie')
 def movie():
 	
-	
+	print("hello")
 	movieId = request.args.get('movieId')
 	userId = request.args.get('userId')
 	# print(movieId)
@@ -91,9 +91,9 @@ def movie():
 
 	# get actors (cast)
 	sql = "SELECT name " \
-		  "FROM movie_Recommender.cast_info " \
+		  "FROM movie_Recommender.cast_infor " \
 		  "INNER JOIN movie_cast " \
-		  "ON cast_info.id = movie_cast.cast_id " \
+		  "ON cast_infor.id = movie_cast.cast_id " \
 		  "WHERE movie_id = %s"
 	cursor.execute(sql, (movieId,))
 	actors_dr = cursor.fetchall()
@@ -220,7 +220,17 @@ def user_rating_upd():
 def movie_suggestion():
 	# test
 	# userid = 2103
+	print("hello")
 	userid = request.args.get('userId')
+	print(userid)
+	var_list = [0.4, 0.2, 0.3, 0.05, 0.05]
+	sql = "SELECT movieid" \
+	  "FROM movie_recommender.ratings " \
+	  "WHERE userid = %s AND rating >=4"
+	cursor.execute(sql, (userid,)) 
+	rows = cursor.fetchall()
+	print(rows[0][1])
+
 
 	return movie_recommender(userid)
     	

@@ -10,10 +10,9 @@ app = Flask(__name__)
 # Connect to Database
 try:
 	connection = mysql.connector.connect(host='localhost',
-	                                     database='movie_Recommender',
+	                                     database='movie_recommender',
 	                                     user='root',
-										 auth_plugin='mysql_native_password', # V
-	                                     password='leoJ0205') #zijian: password='')
+	                                     password='') #zijian: password='')
 	if connection.is_connected():
 	    db_Info = connection.get_server_info()
 	    print("Connected to MySQL Server version ", db_Info)
@@ -89,9 +88,9 @@ def movie():
 
 	# get actors (cast)
 	sql = "SELECT name " \
-		  "FROM movie_Recommender.cast_info " \
+		  "FROM movie_Recommender.cast_infor " \
 		  "INNER JOIN movie_cast " \
-		  "ON cast_info.id = movie_cast.cast_id " \
+		  "ON cast_infor.id = movie_cast.cast_id " \
 		  "WHERE movie_id = %s"
 	cursor.execute(sql, (movieId,))
 	actors_dr = cursor.fetchall()
@@ -217,11 +216,21 @@ def user_rating_upd():
 @app.route('/movieSuggestion')
 def movie_suggestion():
 	# test
-	userid = 2103
-	# userid = request.args.get('userId')
+	# userid = 2103
+	print("hello")
+	userid = request.args.get('userId')
+	print(userid)
+	var_list = [0.4, 0.2, 0.3, 0.05, 0.05]
+	sql = "SELECT movieid" \
+	  "FROM movie_recommender.ratings " \
+	  "WHERE userid = %s AND rating >=4"
+	cursor.execute(sql, (userid,)) 
+	rows = cursor.fetchall()
+	print(rows[0][1])
+
 
 	return movie_recommender(userid)
     	
 if __name__=='__main__':
 	# zijian: app.run(debug=True,port=5001) 
-	app.run(port=5001)
+	app.run(debug=True)
