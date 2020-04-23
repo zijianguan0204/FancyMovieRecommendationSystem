@@ -8,7 +8,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
     localStorage.setItem('access_token', true);
-    localStorage.setItem('user_id', 'test1');
+    localStorage.setItem('user_id', '1');
     if (!localStorage.getItem('access_token')){
         return (
             <Login/>
