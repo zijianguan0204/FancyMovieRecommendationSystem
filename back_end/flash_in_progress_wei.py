@@ -10,11 +10,9 @@ app = Flask(__name__)
 # Connect to Database
 try:
 	connection = mysql.connector.connect(host='localhost',
-	                                     database='movie_Recommender',
+	                                     database='movie_recommender',
 	                                     user='root',
-										 password='') #zijian
-										#  auth_plugin='mysql_native_password', # V
-	                                    #  password='leoJ0205') # V
+	                                     password='') #zijian: password='')
 	if connection.is_connected():
 	    db_Info = connection.get_server_info()
 	    print("Connected to MySQL Server version ", db_Info)
@@ -27,14 +25,13 @@ except Error as e:
 @app.route('/movie')
 def movie():
 	
-	print("hello")
-	movieId = request.args.get('movieId')
-	userId = int(request.args.get('userId'))
+	
+	# movieId = request.args.get('movieId')
+	# userId = request.args.get('userId')
 	# print(movieId)
 	# print(userId)
-	# test
-	# movieId = 862
-	# userId = 2103
+	movieId = 862
+	userId = 2103
 
 	# initialization
 	id = ''
@@ -141,8 +138,8 @@ def movie():
 @app.route('/movieSearch')
 def movie_search():
 	# test
-	# search_input = 'Harry Potter'
-	search_input = request.args.get('search')
+	search_input = 'Harry Potter'
+	# search_input = request.args.get('search')
 
 	sql = "SELECT id, title, poster_path " \
 		  "FROM movies_metadata " \
@@ -164,12 +161,12 @@ def movie_search():
 	response.headers.add('Access-Control-Allow-Origin', '*')
 	return response
 
-# # Get user's rating history
+# Get user's rating history
 @app.route('/moviesRating')
 def user_rating_history():
 	# test
-	# userid = 2103
-	userid = int(request.args.get('userId'))
+	userid = 2103
+	# userid = request.args.get('userId')
 
 	sql = "SELECT id, title, poster_path, rating " \
 		  "FROM movie_Recommender.ratings " \
@@ -199,7 +196,7 @@ def user_rating_history():
 def user_rating_upd():
 	if request.headers['CONTENT_TYPE'] == 'application/json':
 		movieId = request.json['movieId']
-		userId = int(request.json['userId'])
+		userId = request.json['userId']
 		rating = request.json['rating']
 
 		sql = "INSERT INTO ratings (movieid, userid, rating) " \
@@ -220,98 +217,20 @@ def user_rating_upd():
 def movie_suggestion():
 	# test
 	# userid = 2103
-
-
-	try:
-		connection = mysql.connector.connect(host='localhost',
-	                                     database='movie_Recommender',
-	                                     user='root',
-										 password='') #zijian
-										#  auth_plugin='mysql_native_password', # V
-	                                    #  password='leoJ0205') # V
-		if connection.is_connected():
-		    db_Info = connection.get_server_info()
-		    print("Connected to MySQL Server version ", db_Info)
-		    cursor = connection.cursor()
-
-	except Error as e:
-	    print("Error while connecting to MySQL", e)
-
+	print("hello")
 	userid = request.args.get('userId')
-	# userid = 1
 	print(userid)
 	var_list = [0.4, 0.2, 0.3, 0.05, 0.05]
-
-# get all movie Id that the user rated >=4
-	sql = "SELECT movieId FROM movie_Recommender.ratings WHERE userid = %s"
-	cursor.execute(sql,(userid,)) 
+	sql = "SELECT movieid" \
+	  "FROM movie_recommender.ratings " \
+	  "WHERE userid = %s AND rating >=4"
+	cursor.execute(sql, (userid,)) 
 	rows = cursor.fetchall()
-	movieid_list = []
-	for tup in rows:
-		movieid_list.append(tup[0])
+	print(rows[0][1])
 
-# get all genres into dictionary
-	genre_dict = {}
-	for movieid in movieid_list:
-		sql = "SELECT genre FROM movie_Recommender.movie_genre WHERE id = %s"
-		cursor.execute(sql,(movieid,))
-		rows = cursor.fetchall()
-		for tup in rows:
-			if tup[0] in genre_dict:
-				genre_dict[tup[0]] += 1
-			else:
-				genre_dict[tup[0]] = 1
-
-# get all cast into dictionary
-	cast_dict = {}
-	for movieid in movieid_list:
-		sql = "SELECT name FROM movie_Recommender.movie_cast INNER JOIN movie_Recommender.cast_infor WHERE cast_id = id AND movie_id = %s"
-		cursor.execute(sql,(movieid,))
-		rows = cursor.fetchall()
-		for tup in rows:
-			if tup[0] in cast_dict:
-				cast_dict[tup[0]] += 1
-			else:
-				cast_dict[tup[0]] = 1
-
-# get all director into dictionary
-	director_dict = {}
-	for movieid in movieid_list:
-		sql = "SELECT name FROM movie_Recommender.movie_crew INNER JOIN movie_Recommender.crew_info WHERE crew_id = id AND movie_id = %s AND job = 'Director\r'"
-		cursor.execute(sql,(movieid,))
-		rows = cursor.fetchall()
-		for tup in rows:
-			if tup[0] in director_dict:
-				director_dict[tup[0]] += 1
-			else:
-				director_dict[tup[0]] = 1
-
-# get all release_date into dictionary
-	releaseDate_dict = {}
-	for movieid in movieid_list:
-		sql = "SELECT release_date FROM movies_metadata WHERE release_date >= '2000' AND id = %s"
-		cursor.execute(sql,(movieid,))
-		rows = cursor.fetchall()
-		for tup in rows:
-			if '>=2000' in releaseDate_dict:
-				releaseDate_dict['>=2000'] += 1
-			else:
-				releaseDate_dict['>=2000'] = 1
-
-		sql = "SELECT release_date FROM movies_metadata WHERE release_date < '2000' AND id = %s"
-		cursor.execute(sql,(movieid,))
-		rows = cursor.fetchall()
-		for tup in rows:
-			if '<2000' in releaseDate_dict:
-				releaseDate_dict['<2000'] += 1
-			else:
-				releaseDate_dict['<2000'] = 1
-
-
-			
 
 	return movie_recommender(userid)
     	
 if __name__=='__main__':
-	app.run(debug=True) # zijian
-	# app.run(port=5001)
+	# zijian: app.run(debug=True,port=5001) 
+	app.run(debug=True)
