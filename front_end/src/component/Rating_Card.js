@@ -12,7 +12,7 @@ function Rating_Card(movie) {
                 <Box component="fieldset" mb={3} borderColor="transparent" >
                     <Rating
                         name="simple-controlled"
-                        size="samll"
+                        size="small"
                         value={Math.max(movie.rating,0)}
                         readOnly
                     />

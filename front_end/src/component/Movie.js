@@ -6,7 +6,6 @@ import logo from "../logo.svg"
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import {Link} from "react-router-dom";
-import Nav from "./Nav"
 
 const config=require('../config/default');
 
@@ -19,7 +18,7 @@ function Movie({match}) {
         actor:'',
         avg_rating:3,
         released:'',
-        description:'Lalalalalala',
+        description:'This is description',
         user_rating:-1
     });
     const [isLoad,setIsLoad] = useState(true);

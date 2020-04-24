@@ -7,13 +7,8 @@ import Nav from "./component/Nav"
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
-    // localStorage.setItem('access_token', false);
-    // localStorage.setItem('user_id', 'test1');
-    // if (!localStorage.getItem('access_token')){
-    //     return (
-    //         <Login/>
-    //     );
-    // }
+
+
   return [
       <Nav/>
       ,
