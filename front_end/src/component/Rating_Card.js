@@ -7,7 +7,7 @@ function Rating_Card(movie) {
     return(
         <div className="col-md-3">
             <div className='well text-center'>
-                <img src={movie.poster} alt={movie.title}/>
+                <img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2'+movie.poster} alt={movie.title}/>
                 <h5>{movie.title}</h5>
                 <Box component="fieldset" mb={3} borderColor="transparent" >
                     <Rating

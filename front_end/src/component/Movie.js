@@ -5,6 +5,8 @@ import '../App.css';
 import logo from "../logo.svg"
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
+import {Link} from "react-router-dom";
+import Nav from "./Nav"
 
 const config=require('../config/default');
 
@@ -24,10 +26,13 @@ function Movie({match}) {
     const [error,setError] = useState(null);
     const [rating,setRating] = useState(0);
 
+
     useEffect(()=>{
         console.log('effect Activate');
         getMovie();
     },[]);
+
+
 
     const getMovie = ()=>{
         axios.get(config.address+`/movie?` +
@@ -48,19 +53,25 @@ function Movie({match}) {
     };
 
     const ratingUpdate = (newValue)=>{
-        setRating(newValue);
-        axios.post(config.address+`/movieRating`
-            , {
-                movieId: match.params.id,
-                userId: localStorage.getItem("user_id"),
-                rating:newValue
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        // console.log(typeof localStorage.getItem('access_token'));
+        if (localStorage.getItem('access_token')==='true') {
+            setRating(newValue);
+            console.log('rating post');
+            axios.post(config.address + `/movieRating`
+                , {
+                    movieId: match.params.id,
+                    userId: localStorage.getItem("user_id"),
+                    rating: newValue
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }else{
+            setRating(null);
+        }
     };
 
     if(error){
@@ -75,26 +86,41 @@ function Movie({match}) {
             <div>
                 <div className="row">
                     <div className="col-md-4" >
-                        <img src={movie.poster} className="thumbnail" alt={"Poster"} />
+                        <img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2'+movie.poster} className="thumbnail" alt={"Poster"} />
                     </div>
                     <div className="col-md-8">
                         <h2 style={{marginBottom:'1em'}}>{movie.title}</h2>
                         <ul className="list-group">
                             <li className="list-group-item"><strong>Genre: </strong> {movie.genre}</li>
                             <li className="list-group-item"><strong>Released: </strong> {movie.released}</li>
-                            <li className="list-group-item"><strong>Rated: </strong> {movie.avg_rating}</li>
+                            <li className="list-group-item"><strong>IMDb Rating: </strong> {movie.avg_rating}</li>
                             <li className="list-group-item"><strong>Director: </strong> {movie.director}</li>
                             <li className="list-group-item"><strong>Actors: </strong> {movie.actor}</li>
                             <Box component="fieldset" mb={3} borderColor="transparent" style={{marginTop:'2em'}}>
                                 <h4 style={{marginBottom:'1em'}}><strong>User Rating</strong></h4>
-                                <Rating
+                                {
+                                    localStorage.getItem('access_token')==='true'?<Rating
+                                        name="simple-controlled"
+                                        size="large"
+                                        value={Math.max(rating,0)}
+                                        onChange={(event, newValue) => {
+                                            ratingUpdate(newValue);
+                                        }}
+
+                                    />:
+                                    <Rating
                                     name="simple-controlled"
                                     size="large"
-                                    value={Math.max(rating,0)}
+                                    value={0}
+                                    disabled
                                     onChange={(event, newValue) => {
-                                        ratingUpdate(newValue);
-                                    }}
-                                />
+                                    ratingUpdate(newValue);
+                                }}
+
+                                    />
+                                }
+
+
                             </Box>
                         </ul>
                     </div>
@@ -108,9 +134,9 @@ function Movie({match}) {
 
                 <div className="row">
                     <div className="well">
-                        <a href="/" className="btn btn-primary">
+                        <Link to={`/`} className="btn btn-primary">
                             Go Back
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
