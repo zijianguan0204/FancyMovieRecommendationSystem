@@ -4,6 +4,8 @@ import ast
 from mysql.connector import Error
 import json
 from movie_recommender import movie_recommender
+import datetime
+from datetime import timedelta
 
 app = Flask(__name__)
 
@@ -220,8 +222,6 @@ def user_rating_upd():
 def movie_suggestion():
 	# test
 	# userid = 2103
-
-
 	try:
 		connection = mysql.connector.connect(host='localhost',
 	                                     database='movie_Recommender',
@@ -242,14 +242,76 @@ def movie_suggestion():
 	print(userid)
 	var_list = [0.4, 0.2, 0.3, 0.05, 0.05]
 
-# get all movie Id that the user rated >=4
-	sql = "SELECT movieId FROM movie_Recommender.ratings WHERE userid = %s"
+# get all movie Id that the user rated >=4 into list
+	sql = "SELECT movieId FROM movie_Recommender.ratings WHERE userid = %s AND rating >= 4"
 	cursor.execute(sql,(userid,)) 
 	rows = cursor.fetchall()
 	movieid_list = []
 	for tup in rows:
 		movieid_list.append(tup[0])
 
+# get all movie rated within 14 days into list
+	recent_list = []
+	for movieid in movieid_list:
+		sql = "SELECT timestamp FROM movie_Recommender.ratings WHERE userid = %s AND movieid = %s"
+		cursor.execute(sql,(userid, movieid,))
+		rows = cursor.fetchall()
+		for tup in rows:
+			cur_ts = tup[0].replace('\r', '') + '000'
+			recent_list.append(cur_ts)
+
+	recent_list.sort(reverse = True)
+	if recent_list != []:
+		most_recent_ts = recent_list[0]
+		most_recent_date = datetime.datetime.fromtimestamp(float(cur_ts) / 1e3)
+		date_before_14days = most_recent_date - timedelta(days=14)
+		ts_before_14days = int(datetime.datetime.timestamp(date_before_14days)*1000)
+
+	ts_list = []
+	for ts in recent_list:
+		if int(ts) >= ts_before_14days:
+			ts_list.append(ts)
+
+	final_movie_list = []
+	for ts in ts_list:
+		ts = str(int(int(ts)/1000))
+		ts = ts + "\r"
+		sql = "SELECT movieid FROM movie_Recommender.ratings WHERE userid = %s AND timestamp = %s"
+		cursor.execute(sql,(userid, ts,))
+		rows = cursor.fetchall()
+		for tup in rows:
+			final_movie_list.append(tup[0])
+
+# add movie in the same collection into the recommend/unrecommend list
+	recommend_list = []
+	unrecommend_list = []
+	collection_list = []
+	for movieid in movieid_list:
+		sql = "SELECT collection FROM movie_Recommender.movies_metadata WHERE id = %s"
+		cursor.execute(sql,(movieid,))
+		rows = cursor.fetchall()
+		for tup in rows:
+			if tup[0] > 0:
+				collection_list.append(tup[0])
+	
+	for collection_id in collection_list:
+		sql = "SELECT id FROM movie_Recommender.movies_metadata WHERE collection = %s"
+		cursor.execute(sql,(collection_id,))
+		rows = cursor.fetchall()
+		count = 0
+		for tup in rows:
+			if count == 0:
+				recommend_list.append(tup[0])
+				count+=1
+			else:
+				unrecommend_list.append(tup[0])
+
+#
+			
+
+
+# create a total dictionary
+	total_dict = {}
 # get all genres into dictionary
 	genre_dict = {}
 	for movieid in movieid_list:
@@ -261,6 +323,7 @@ def movie_suggestion():
 				genre_dict[tup[0]] += 1
 			else:
 				genre_dict[tup[0]] = 1
+	total_dict.update(genre_dict)
 
 # get all cast into dictionary
 	cast_dict = {}
@@ -273,6 +336,10 @@ def movie_suggestion():
 				cast_dict[tup[0]] += 1
 			else:
 				cast_dict[tup[0]] = 1
+	total_dict.update(cast_dict)
+
+
+
 
 # get all director into dictionary
 	director_dict = {}
@@ -285,6 +352,7 @@ def movie_suggestion():
 				director_dict[tup[0]] += 1
 			else:
 				director_dict[tup[0]] = 1
+	total_dict.update(director_dict)
 
 # get all release_date into dictionary
 	releaseDate_dict = {}
@@ -306,9 +374,17 @@ def movie_suggestion():
 				releaseDate_dict['<2000'] += 1
 			else:
 				releaseDate_dict['<2000'] = 1
+	total_dict.update(releaseDate_dict)
+
+#get top 15 tags
+	top_tags = []
+	for k in sorted(total_dict, key=total_dict.get, reverse=True):
+		top_tags.append(k)
+
+	if len(top_tags) > 15:
+		top_tags = top_tags[0:14]
 
 
-			
 
 	return movie_recommender(userid)
     	
