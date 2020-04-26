@@ -148,3 +148,9 @@
   opacity: .75;
   color: white;
 }
+
+.thumbnail
+{
+  width: 320px;
+  height:480px
+}
