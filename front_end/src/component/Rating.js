@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import '../bootstrap.css';
 import '../App.css';
 import axios from "axios";
-import Rating_Card from "./Ratiing_Card";
+import Rating_Card from "./Rating_Card";
 
 const config=require('../config/default');
 
@@ -16,7 +16,7 @@ function Rating() {
 
     const getRating = ()=>{
         axios.get(config.address+`/moviesRating?` +
-            `&userId=${localStorage.getItem("user_id")}`)
+            `&userId=${localStorage.getItem('access_token')==='true'?localStorage.getItem("user_id"):''}`)
             .then(function (response) {
                 // handle success
                 console.log(response);

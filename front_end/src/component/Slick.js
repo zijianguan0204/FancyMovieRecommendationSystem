@@ -17,7 +17,7 @@ function Slick() {
     const getSuggestions = ()=>{
         console.log('getSuggestions');
         axios.get(config.address+`/movieSuggestion?` +
-            `&userId=${localStorage.getItem("user_id")}`)
+            `&userId=${localStorage.getItem('access_token')==='true'?localStorage.getItem("user_id"):''}`)
             .then(function (response) {
                 // handle success
                 console.log(response);

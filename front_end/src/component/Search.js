@@ -3,7 +3,7 @@ import '../bootstrap.css';
 import '../App.css';
 import axios from "axios";
 import Slick from "./Slick";
-import Tag from './Tag';
+import Search_Card from './Search_Card';
 import Rating from "./Rating";
 
 const config=require('../config/default');
@@ -38,7 +38,7 @@ function Search() {
     const searchMovieList = ()=>{
         let output = [];
         movie.forEach(m =>{
-            output.push(Tag(m));
+            output.push(Search_Card(m));
         });
         console.log(output);
         return output;
