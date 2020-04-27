@@ -41,7 +41,8 @@ function Movie({match}) {
                 // handle success
                 setMovie(response.data);
                 setRating(response.data.user_rating);
-                setIsLoad(true)
+                setIsLoad(true);
+                console.log(response.data.user_rating)
             })
             .catch(function (error) {
                 // handle error
@@ -61,6 +62,11 @@ function Movie({match}) {
                     movieId: match.params.id,
                     userId: localStorage.getItem("user_id"),
                     rating: newValue
+                },{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Access-Control-Allow-Origin": "*",
+                    }
                 })
                 .then(function (response) {
                     console.log(response);
@@ -85,7 +91,7 @@ function Movie({match}) {
             <div>
                 <div className="row">
                     <div className="col-md-4" >
-                        <img src={'https://image.tmdb.org/t/p/w600_and_h900_bestv2'+movie.poster} className="thumbnail" alt={"Poster"} />
+                        <img src={'https://image.tmdb.org/t/p/original'+movie.poster} className="thumbnail" alt={"Poster"} />
                     </div>
                     <div className="col-md-8">
                         <h2 style={{marginBottom:'1em'}}>{movie.title}</h2>
@@ -115,19 +121,18 @@ function Movie({match}) {
                                     onChange={(event, newValue) => {
                                     ratingUpdate(newValue);
                                 }}
-
                                     />
                                 }
-
-
                             </Box>
                         </ul>
                     </div>
                 </div>
                 <div className="row">
                     <div className="well">
-                        <h3>Description</h3>
-                        {movie.description}
+                        <p>
+                            <h3>Description</h3>
+                            {movie.description}
+                        </p>
                     </div>
                 </div>
 
