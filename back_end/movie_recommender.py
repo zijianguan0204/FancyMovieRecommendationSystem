@@ -165,5 +165,24 @@ def movie_recommender(userid):
         top_tags.append(k)
     if len(top_tags) > 15:
         top_tags = top_tags[0:14]
+
+
+    #insert to recommend_list
+    userId = 1
+    movie_list = ['1','2','3','4','5']
+    recommend_movie = ''
+    for movie in movie_list:
+        recommend_movie = recommend_movie + ',' + movie
+    sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
+    try:
+        cursor.execute(sql,(userId,recommend_movie,))
+        connection.commit()
+        print("successfully executed sql in recommend_movie")
+    except Error as e:
+        print("Error while executing SQL in recommend movie", e)
+    
+
+
+
     response = jsonify(data = [])
     return None
