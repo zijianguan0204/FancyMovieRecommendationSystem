@@ -279,3 +279,4 @@ def time_variance(timestamp, last_time=datetime.datetime.now()):
 if __name__ == "__main__":
     m = MovieStatistics()
     movie_recommend_update(7896, m)
+

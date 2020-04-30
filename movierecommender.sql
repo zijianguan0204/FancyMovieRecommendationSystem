@@ -142,3 +142,11 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 ROWS;
+
+-- Create Table [recommend_list]
+DROP TABLE IF EXISTS `movie_recommender`.`recommend_list`;
+CREATE TABLE `movie_recommender`.`recommend_list` (
+    `userid` int NOT NULL,
+    `movie_list` varchar(255),
+    PRIMARY KEY (`userid`)
+);

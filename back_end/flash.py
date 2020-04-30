@@ -8,7 +8,7 @@ from mysql.connector import Error
 import json
 # from movie_recommender import movie_recommender
 import datetime
-from datetime import timedelta
+from datetime import timedelta, date
 
 app = Flask(__name__)
 
@@ -35,7 +35,6 @@ except Error as e:
 @app.route('/movie')
 @cross_origin()
 def movie():
-    print("hello")
     movieId = request.args.get('movieId')
     userId = int(request.args.get('userId'))
     # print(movieId)
@@ -174,7 +173,8 @@ def movie_search():
         x['poster'] = row[2]
         result.append(x)
     # response = jsonify(dict(rows))
-    print(result)
+    # print(result)
+
     response = jsonify(result)
     return response
 
@@ -205,8 +205,7 @@ def user_rating_history():
         x['poster'] = row[2]
         x['rating'] = row[3]
         result.append(x)
-    # response = jsonify(dict(rows))
-    print(rows)
+    
     response = jsonify(result)
     return response
 
@@ -220,15 +219,18 @@ def user_rating_upd():
     if request.headers['CONTENT_TYPE'] == 'application/json':
         print('post rating update get data')
         movieId = request.json['movieId']
+        print(movieId)
         userId = int(request.json['userId'])
         rating = request.json['rating']
+        current = datetime.datetime.now()
+        cur_date_obj = datetime.datetime(current.year, current.month, current.day)
+        timestamp = int(datetime.datetime.timestamp(cur_date_obj))
 
-        sql = "INSERT INTO ratings (movieid, userid, rating) " \
-              f"VALUES ({movieId}, {userId}, {rating}) " \
-              f"ON DUPLICATE KEY UPDATE rating = {rating}"
+        sql = "INSERT INTO ratings (userid, movieid, rating, timestamp) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE rating = %s, timestamp = %s;"
         try:
-            cursor.execute(sql)
+            cursor.execute(sql,(userId,movieId,rating,timestamp,rating,timestamp,))
             connection.commit()
+            print("successfully executed sql")
         except Error as e:
             print("Error while executing SQL", e)
 
