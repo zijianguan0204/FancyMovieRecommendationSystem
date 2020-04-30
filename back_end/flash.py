@@ -12,7 +12,7 @@ from datetime import timedelta
 
 app = Flask(__name__)
 
-password = '5557534213'
+password = ''
 
 # Connect to Database
 try:
