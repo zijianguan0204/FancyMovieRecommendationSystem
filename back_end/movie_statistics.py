@@ -3,14 +3,19 @@ from mysql.connector import Error
 
 password = ''
 
+
 class MovieStatistics:
     def __init__(self):
+        """
+        initialize sql connector
+        retrieve all required genre, cast, crew count from database
+        """
         self.__total = {}
         try:
             self.__connection_suggestion = mysql.connector.connect(host='localhost',
-                                                                 database='movie_Recommender',
-                                                                 user='root',
-                                                                 password=password)  # zijian
+                                                                   database='movie_Recommender',
+                                                                   user='root',
+                                                                   password=password)  # zijian
             #  auth_plugin='mysql_native_password', # V
             #  password='leoJ0205') # V
             if self.__connection_suggestion.is_connected():
@@ -61,8 +66,6 @@ class MovieStatistics:
 
     def get_total(self):
         return self.__total
-
-
 
 
 if __name__ == "__main__":

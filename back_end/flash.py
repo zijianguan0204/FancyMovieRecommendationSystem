@@ -6,9 +6,8 @@ import ast
 from flask_cors import cross_origin
 from mysql.connector import Error
 import json
-# from movie_recommender import movie_recommender
+from movie_recommender import movie_recommend_update
 import datetime
-from datetime import timedelta, date
 
 app = Flask(__name__)
 
