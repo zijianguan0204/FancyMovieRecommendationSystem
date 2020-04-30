@@ -6,13 +6,13 @@ import ast
 from flask_cors import cross_origin
 from mysql.connector import Error
 import json
-from movie_recommender import movie_recommender
+# from movie_recommender import movie_recommender
 import datetime
 from datetime import timedelta
 
 app = Flask(__name__)
 
-password = ''
+password = '5557534213'
 
 # Connect to Database
 try:
@@ -75,10 +75,11 @@ def movie():
           "WHERE id = %s"
     cursor.execute(sql, (movieId,))
     genres_dr = cursor.fetchall()
-    if genres_dr != None:
-        for genre in genres_dr:
-            genres_str += genre[0] + ','
-        genres_str = genres_str[:-1]
+    if genres_dr:
+        # for genre in genres_dr:
+        #     genres_str += genre[0] + ','
+        # genres_str = genres_str[:-1]
+        genres_str = ','.join(map(lambda x:x[0],genres_dr))
 
     # get average rating
     # sql = "SELECT AVG(rating) AS ave_rating " \
@@ -105,11 +106,12 @@ def movie():
           "WHERE movie_id = %s"
     cursor.execute(sql, (int(movieId),))
     actors_dr = cursor.fetchall()
-    if actors_dr != None:
-        for actor in actors_dr:
-            actors_str += actor[0][:-1] + ','
-        # actors_str += actor[0] + ','
-        actors_str = actors_str[:-1]
+    if actors_dr:
+        # for actor in actors_dr:
+        #     actors_str += actor[0] + ','
+        # actors_str = actors_str[:-1]
+        actors_str = ','.join(map(lambda x: x[0], actors_dr))
+    print("actors_str",sql)
 
     # get director (crew)
     sql = "SELECT name " \
@@ -117,14 +119,16 @@ def movie():
           "INNER JOIN movie_crew " \
           "ON crew_info.id = movie_crew.crew_id " \
           "WHERE movie_id = %s " \
-          "AND job = 'director\r'"
+          "AND job = 'director'"
     cursor.execute(sql, (int(movieId),))
     director_dr = cursor.fetchall()
-    if director_dr != None:
-        for director in director_dr:
-            director_str += director[0][:-1] + ','
-        # director_str += director[0] + ','
-        director_str = director_str[:-1]
+    if director_dr:
+        # for director in director_dr:
+        #     director_str += director[0] + ','
+        # # director_str += director[0] + ','
+        # director_str = director_str[:-1]
+        director_str = ','.join(map(lambda x: x[0], director_dr))
+        print("director_str",director_str)
 
     data = {
         'id': id,

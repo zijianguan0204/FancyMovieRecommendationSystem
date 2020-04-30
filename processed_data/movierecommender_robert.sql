@@ -34,7 +34,7 @@ load data local infile 'E:/CMPE256/data/movies_metadata_processed.csv'
 INTO TABLE movies_metadata  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_genre]
@@ -52,7 +52,7 @@ load data local infile 'E:/CMPE256/data/movies_genre.csv'
 INTO TABLE movie_genre  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [ratings]
@@ -71,7 +71,7 @@ load data local infile 'E:/CMPE256/data/rating_processed.csv'
 INTO TABLE ratings  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [cast_info]
@@ -88,7 +88,7 @@ load data local infile 'E:/CMPE256/data/cast_info.csv'
 INTO TABLE cast_infor
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 
@@ -106,14 +106,14 @@ load data local infile 'E:/CMPE256/data/crew_info.csv'
 INTO TABLE crew_info 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_cast]
 DROP TABLE IF EXISTS `movie_recommender`.`movie_cast`;
 CREATE TABLE `movie_recommender`.`movie_cast` (
     `cast_id` int NOT NULL,
-    `movie_id` varchar(255),
+    `movie_id` int,
     PRIMARY KEY (`cast_id`, `movie_id`)
 );
 
@@ -123,14 +123,14 @@ load data local infile 'E:/CMPE256/data/movie_cast.csv'
 INTO TABLE movie_cast 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_cast]
 DROP TABLE IF EXISTS `movie_recommender`.`movie_crew`;
 CREATE TABLE `movie_recommender`.`movie_crew` (
     `crew_id` int NOT NULL,
-    `movie_id` varchar(255),
+    `movie_id` int,
     `job` varchar(255),
     PRIMARY KEY (`movie_id`, `crew_id`, `job`)
 );
@@ -141,7 +141,7 @@ load data local infile 'E:/CMPE256/data/movie_crew.csv'
 INTO TABLE movie_crew 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 

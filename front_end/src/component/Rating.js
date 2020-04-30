@@ -16,7 +16,7 @@ function Rating() {
 
     const getRating = ()=>{
         axios.get(config.address+`/moviesRating?` +
-            `&userId=${localStorage.getItem('access_token')==='true'?localStorage.getItem("user_id"):''}`)
+            `userId=${localStorage.getItem('access_token')==='true'?localStorage.getItem("user_id"):''}`)
             .then(function (response) {
                 // handle success
                 console.log(response);
