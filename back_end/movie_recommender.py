@@ -7,7 +7,7 @@ import time
 import math
 from collections import defaultdict
 
-password = ''
+password = '5557534213'
 
 
 def movie_recommend_update(userid, movie_statistics):
@@ -27,7 +27,7 @@ def movie_recommend_update(userid, movie_statistics):
         if connection_suggestion.is_connected():
             db_Info_suggestion = connection_suggestion.get_server_info()
             cursor_suggestion = connection_suggestion.cursor()
-            print("Connected to MySQL Server version ", db_Info_suggestion)
+            print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
 
     except Error as e:
         print("Error while connecting to MySQL", e)
@@ -277,8 +277,8 @@ def movie_recommend_update(userid, movie_statistics):
     str_recommend_list = ','.join(map(str,recommend_list))
     sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
     try:
-        cursor.execute(sql,(userId,str_recommend_list,))
-        connection.commit()
+        cursor_suggestion.execute(sql,(userid,str_recommend_list,))
+        connection_suggestion.commit()
         print("successfully executed sql")
     except Error as e:
         print("Error while executing SQL", e)
@@ -296,8 +296,8 @@ def time_variance(this_time, last_time=datetime.datetime.now()):
     day = (last_time - this_time).days
     return min(math.exp((-day + 14) / 320), 1)
 
-
-if __name__ == "__main__":
-    m = MovieStatistics()
-    movie_recommend_update(7896, m)
+#
+# if __name__ == "__main__":
+#     m = MovieStatistics()
+#     movie_recommend_update(7896, m)
 

@@ -12,7 +12,9 @@ import datetime
 
 app = Flask(__name__)
 
-password = ''
+password = '5557534213'
+
+print("Backend Start")
 m = MovieStatistics()
 
 # Connect to Database
@@ -25,12 +27,13 @@ try:
     #  password='leoJ0205') # V
     if connection.is_connected():
         db_Info = connection.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
+        print("Flask Connected to MySQL Server version ", db_Info)
         cursor = connection.cursor()
 
 except Error as e:
     print("Error while connecting to MySQL", e)
 
+print("SQL Established")
 
 # Get movie detail according to movie ID and user ID
 @app.route('/movie')
@@ -258,10 +261,10 @@ def movie_suggestion():
     # userid = 2103
     userid = request.args.get('userId')
     userid = 1
-    sql = "SELECT movie_list FROM recommend_list where userid = %s"
+    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s"
     print(userid)
     try:
-    	cursor.execute(sql, (userid,))
+    	# cursor.execute(sql, (userid,))
     	# rows = cursor.fetchall()
     	print("successfully executed sql")
     except Error as e:

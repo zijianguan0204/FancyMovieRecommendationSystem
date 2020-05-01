@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-password = ''
+password = '5557534213'
 
 
 class MovieStatistics:
@@ -21,7 +21,7 @@ class MovieStatistics:
             if self.__connection_suggestion.is_connected():
                 self.__db_Info_suggestion = self.__connection_suggestion.get_server_info()
                 self.__cursor_suggestion = self.__connection_suggestion.cursor()
-                print("Connected to MySQL Server version ", self.__db_Info_suggestion)
+                print("Movie Statistics Connected to MySQL Server version ", self.__db_Info_suggestion)
 
         except Error as e:
             print("Error while connecting to MySQL", e)
@@ -55,6 +55,8 @@ class MovieStatistics:
             self.__director_count[tup[0]] = tup[1]
         self.__total.update(self.__director_count)
 
+        self.__connection_suggestion.close()
+
     def get_director(self):
         return self.__director_count
 
@@ -67,9 +69,9 @@ class MovieStatistics:
     def get_total(self):
         return self.__total
 
-
-if __name__ == "__main__":
-    m = MovieStatistics()
-    print(m.get_cast())
-    print(m.get_director())
-    print(m.get_genre())
+#
+# if __name__ == "__main__":
+#     m = MovieStatistics()
+#     print(m.get_cast())
+#     print(m.get_director())
+#     print(m.get_genre())
