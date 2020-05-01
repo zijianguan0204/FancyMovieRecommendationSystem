@@ -33,6 +33,21 @@ try:
 except Error as e:
     print("Error while connecting to MySQL", e)
 
+try:
+    connection2 = mysql.connector.connect(host='localhost',
+                                         database='movie_Recommender',
+                                         user='root',
+                                         password=password)  # zijian
+    #  auth_plugin='mysql_native_password', # V
+    #  password='leoJ0205') # V
+    if connection2.is_connected():
+        db_Info = connection2.get_server_info()
+        print("Flask Connected to MySQL Server version ", db_Info)
+        cursor2 = connection2.cursor()
+
+except Error as e:
+    print("Error while connecting to MySQL", e)
+
 print("SQL Established")
 
 # Get movie detail according to movie ID and user ID
@@ -261,16 +276,15 @@ def movie_suggestion():
     # userid = 2103
     userid = request.args.get('userId')
     userid = 1
-    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s"
+    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % 1
     print(userid)
     try:
-    	# cursor.execute(sql, (userid,))
-    	# rows = cursor.fetchall()
+    	cursor2.execute(sql)
+    	rows = cursor2.fetchall()
     	print("successfully executed sql")
     except Error as e:
     	print("Error while executing SQL", e)
-
-    # print(rows)
+    print(rows)
 
     result = []
     # for row in rows:
