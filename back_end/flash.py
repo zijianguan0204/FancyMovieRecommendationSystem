@@ -257,7 +257,30 @@ def movie_suggestion():
     # test
     # userid = 2103
     userid = request.args.get('userId')
-    
+    userid = 1
+    sql = "SELECT movie_list FROM recommend_list where userid = %s"
+    print(userid)
+    try:
+    	cursor.execute(sql, (userid,))
+    	# rows = cursor.fetchall()
+    	print("successfully executed sql")
+    except Error as e:
+    	print("Error while executing SQL", e)
+
+    # print(rows)
+
+    result = []
+    # for row in rows:
+    #     x = {}
+    #     x['id'] = row[0]
+    #     x['title'] = row[1]
+    #     x['poster'] = row[2]
+    #     result.append(x)
+    # response = jsonify(dict(rows))
+    # print(result)
+
+    response = jsonify(result)
+    return response
     return ""
     # return movie_recommender(userid)
 

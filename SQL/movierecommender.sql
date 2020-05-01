@@ -24,16 +24,16 @@ CREATE TABLE `movie_recommender`.`movies_metadata` (
   `vote_average` DECIMAL(20, 10),
   `vote_count` int,
   `collection` int,
-   PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`)
 ); 
 
 --  Import Data from [movies_metadata.csv] to [movies_metadata]
 -- load data local infile 'movies_metadata_new.csv' 
-load data local infile 'movies_metadata_processed.csv' 
+load data infile 'movies_metadata_processed.csv' 
 INTO TABLE movies_metadata  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\r\n' 
+LINES TERMINATED BY '\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_genre]
