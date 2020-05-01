@@ -7,11 +7,13 @@ from flask_cors import cross_origin
 from mysql.connector import Error
 import json
 from movie_recommender import movie_recommend_update
+from movie_statistics import MovieStatistics
 import datetime
 
 app = Flask(__name__)
 
 password = ''
+m = MovieStatistics()
 
 # Connect to Database
 try:
@@ -233,6 +235,8 @@ def user_rating_upd():
         except Error as e:
             print("Error while executing SQL", e)
 
+        rec_movie_list = movie_recommend_update(userId, m)
+
         response = jsonify("")
         return 'Success'
 
@@ -244,6 +248,7 @@ def movie_suggestion():
     # test
     # userid = 2103
     userid = request.args.get('userId')
+    
     return ""
     # return movie_recommender(userid)
 

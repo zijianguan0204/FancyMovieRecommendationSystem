@@ -34,11 +34,27 @@ def movie_recommend_update(userid, movie_statistics):
 
     print(userid)
     start = time.time()
+    recommend_list = []
+    default_recommend_list = []
+    unrecommend_list = []
+
+
+    #get the first 20 most popular movies as the default list
+    sql = "SELECT movieId FROM movie_Recommender.movies_metadata ORDER BY popularity DESC;"
+    cursor_suggestion.execute(sql, (userid,))
+    rows = cursor_suggestion.fetchall()
+    for tup in rows:
+        default_recommend_list.append(tup[0])
+    default_recommend_list = default_recommend_list[0:19]
 
     # get all movie Id that the user rated >=4 into list
     sql = "SELECT movieId,timestamp,rating FROM movie_Recommender.ratings WHERE userid = %s AND rating >= 4"
     cursor_suggestion.execute(sql, (userid,))
     rows = cursor_suggestion.fetchall()
+    #if the user is new, he has not rated any movie, recommend default
+    if len(rows) == 0:
+        return default_recommend_list
+
     movieid_list = []
     movie_rating = {}
     movie_rating_timestamp = {}
@@ -85,8 +101,7 @@ def movie_recommend_update(userid, movie_statistics):
             final_movie_list.append(tup[0])
 
     # add movie in the same collection into the recommend/unrecommend list
-    recommend_list = []
-    unrecommend_list = []
+
     collection_list = []
     for movieid in movieid_list:
         sql = "SELECT collection FROM movie_Recommender.movies_metadata WHERE id = %s"
@@ -257,6 +272,17 @@ def movie_recommend_update(userid, movie_statistics):
             break
         recommend_list.append(_movie_id)
     print("recommend_list",recommend_list)
+
+    # adding list to db
+    str_recommend_list = ','.join(map(str,recommend_list))
+    sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
+    try:
+        cursor.execute(sql,(userId,str_recommend_list,))
+        connection.commit()
+        print("successfully executed sql")
+    except Error as e:
+        print("Error while executing SQL", e)
+
     return recommend_list
 
 

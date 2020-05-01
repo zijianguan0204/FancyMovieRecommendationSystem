@@ -2,12 +2,12 @@
 CREATE database IF NOT EXISTS movie_Recommender
 DEFAULT CHARACTER SET utf8;
 -- DEFAULT COLLATE utf8mb4_0900_ai_ci;
-
+SET GLOBAL local_infile = 1;
 SET default_storage_engine = InnoDB;
 
 
 -- Specify Database [movierecommender]
-USE movie_Recommender;
+USE movie_recommender;
 
 
 -- Create Table [movies_metadata]
@@ -24,16 +24,16 @@ CREATE TABLE `movie_recommender`.`movies_metadata` (
   `vote_average` DECIMAL(20, 10),
   `vote_count` int,
   `collection` int,
-  PRIMARY KEY (`id`)
+   PRIMARY KEY (`id`)
 ); 
 
 --  Import Data from [movies_metadata.csv] to [movies_metadata]
 -- load data local infile 'movies_metadata_new.csv' 
-load data infile 'movies_metadata_processed.csv' 
+load data local infile 'movies_metadata_processed.csv' 
 INTO TABLE movies_metadata  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_genre]
@@ -51,7 +51,7 @@ load data infile 'movies_genre.csv'
 INTO TABLE movie_genre  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [ratings]
@@ -70,7 +70,7 @@ load data infile 'rating_processed.csv'
 INTO TABLE ratings  
 FIELDS TERMINATED BY ','  
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [cast_info]
@@ -87,7 +87,7 @@ load data infile 'cast_info.csv'
 INTO TABLE cast_infor
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 
@@ -105,14 +105,14 @@ load data infile 'crew_info.csv'
 INTO TABLE crew_info 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_cast]
 DROP TABLE IF EXISTS `movie_recommender`.`movie_cast`;
 CREATE TABLE `movie_recommender`.`movie_cast` (
     `cast_id` int NOT NULL,
-    `movie_id` varchar(255),
+    `movie_id` int(255),
     PRIMARY KEY (`cast_id`, `movie_id`)
 );
 
@@ -122,14 +122,14 @@ load data infile 'movie_cast.csv'
 INTO TABLE movie_cast 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [movie_cast]
 DROP TABLE IF EXISTS `movie_recommender`.`movie_crew`;
 CREATE TABLE `movie_recommender`.`movie_crew` (
     `crew_id` int NOT NULL,
-    `movie_id` varchar(255),
+    `movie_id` int(255),
     `job` varchar(255),
     PRIMARY KEY (`movie_id`, `crew_id`, `job`)
 );
@@ -140,7 +140,7 @@ load data infile 'movie_crew.csv'
 INTO TABLE movie_crew 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '\r\n' 
 IGNORE 1 ROWS;
 
 -- Create Table [recommend_list]
