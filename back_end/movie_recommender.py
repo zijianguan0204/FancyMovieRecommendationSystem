@@ -7,7 +7,7 @@ import time
 import math
 from collections import defaultdict
 
-password = '5557534213'
+password = ''
 
 
 def movie_recommend_update(userid, movie_statistics):
