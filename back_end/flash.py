@@ -236,6 +236,15 @@ def user_rating_upd():
             print("Error while executing SQL", e)
 
         rec_movie_list = movie_recommend_update(userId, m)
+        # adding list to db
+        str_recommend_list = ','.join(map(str,rec_movie_list))
+        sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
+        try:
+        	cursor.execute(sql,(userId,str_recommend_list,))
+        	connection.commit()
+        	print("successfully executed sql")
+        except Error as e:
+        	print("Error while executing SQL", e)
 
         response = jsonify("")
         return 'Success'
