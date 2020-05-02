@@ -317,9 +317,11 @@ def movie_suggestion():
         x['poster'] = row[2]
         result.append(x)
 
-    print(result)
-    result = result[0:7]
+    # print(result)
 
+    result = random.sample(result, 8)
+    print("Here is the final recommended result")
+    print(result)
     response = jsonify(result)
     return response
     # return ""

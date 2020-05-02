@@ -117,30 +117,40 @@ def movie_recommend_update(userid, movie_statistics):
         rows = cursor_suggestion.fetchall()
         count = 0
         for tup in rows:
-            if count == 0:
+            if count == 0 and tup[0] != collection_id:
                 recommend_list.append(tup[0])
                 count += 1
             else:
                 unrecommend_list.append(tup[0])
     print("Movie collection retrieve", time.time() - start)
+    print("here is the recommend list after collection")
+    print(recommend_list)
     #
 
     movieid_list_sql = '(' + ','.join(map(str, movieid_list)) + ')'
     # create a total dictionary
     total_dict = {}
     movie_rated_tag = defaultdict(set)
+
+
     # get all genres into dictionary
     genre_dict = defaultdict(float)
     sql = "SELECT id, genre FROM movie_Recommender.movie_genre " \
           "WHERE id in %s" % movieid_list_sql
     cursor_suggestion.execute(sql)
     rows = cursor_suggestion.fetchall()
+
+    print("tup is below ")
     for tup in rows:
+
+        print(tup)
         genre_dict[tup[1]] += (movie_rating[tup[0]]-3) * movie_rating_parameter[tup[0]]
         movie_rated_tag[tup[0]].add(tup[1])
-
+    
     total_dict.update(genre_dict)
-    print("Movie genre retrieve", time.time() - start,genre_dict)
+
+    print("Movie genre retrieve", time.time() - start)
+
 
     # get all cast into dictionary
     cast_dict = defaultdict(float)
@@ -164,7 +174,9 @@ def movie_recommend_update(userid, movie_statistics):
         director_dict[tup[1]] += (movie_rating[tup[0]]-3) * movie_rating_parameter[tup[0]]
         movie_rated_tag[tup[0]].add(tup[1])
     total_dict.update(director_dict)
-    print("Movie crew retrieve", time.time() - start)
+    # print("Movie crew retrieve", time.time() - start)
+    # print("below is the total_dict")
+    # print(total_dict)
 
     # get all release_date into dictionary
     # releaseDate_dict = defaultdict(float)
@@ -191,7 +203,6 @@ def movie_recommend_update(userid, movie_statistics):
         top_tags.append((k, val))
     if len(top_tags) > 15:
         top_tags = top_tags[0:14]
-    print(top_tags)
     print("Movie tag retrive", time.time() - start)
     # response = jsonify(data = [])
 
@@ -273,8 +284,22 @@ def movie_recommend_update(userid, movie_statistics):
         recommend_list.append(_movie_id)
     print("recommend_list",recommend_list)
 
+    final_recommend_list = []
+    for movie in recommend_list:
+        if movie not in movieid_list:
+            final_recommend_list.append(movie)
+
+    final_recommend_list = set(final_recommend_list)
+    unrecommend_list = set(unrecommend_list)
+    # print("here is the recommend list before remove from unrecommend")
+    # print(recommend_list)
+
+    final_recommend_list = final_recommend_list - unrecommend_list
+    # print("here is the recommend list after remove from unrecommend")
+    # print(recommend_list)
+
     # adding list to db
-    str_recommend_list = ','.join(map(str,recommend_list))
+    str_recommend_list = ','.join(map(str,final_recommend_list))
     sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE movie_list = %s;"
     try:
         cursor_suggestion.execute(sql,(userid,str_recommend_list,str_recommend_list,))
@@ -283,7 +308,7 @@ def movie_recommend_update(userid, movie_statistics):
     except Error as e:
         print("Error while executing SQL", e)
 
-    return recommend_list
+    return final_recommend_list
 
 
 def time_variance(this_time, last_time=datetime.datetime.now()):
