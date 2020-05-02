@@ -12,7 +12,7 @@ import datetime
 
 app = Flask(__name__)
 
-password = ''
+password = '5557534213'
 
 print("Backend Start")
 m = MovieStatistics()
@@ -22,9 +22,8 @@ try:
     connection = mysql.connector.connect(host='localhost',
                                          database='movie_Recommender',
                                          user='root',
-                                         password=password)  # zijian
-    #  auth_plugin='mysql_native_password', # V
-    #  password='leoJ0205') # V
+                                         password=password)
+
     if connection.is_connected():
         db_Info = connection.get_server_info()
         print("Flask Connected to MySQL Server version ", db_Info)

@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-password = ''
+password = '5557534213'
 
 
 class MovieStatistics:

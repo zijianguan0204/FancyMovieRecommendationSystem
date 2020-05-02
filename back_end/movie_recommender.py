@@ -7,7 +7,7 @@ import time
 import math
 from collections import defaultdict
 
-password = ''
+password = '5557534213'
 
 
 def movie_recommend_update(userid, movie_statistics):
@@ -140,7 +140,7 @@ def movie_recommend_update(userid, movie_statistics):
         movie_rated_tag[tup[0]].add(tup[1])
 
     total_dict.update(genre_dict)
-    print("Movie genre retrieve", time.time() - start)
+    print("Movie genre retrieve", time.time() - start,genre_dict)
 
     # get all cast into dictionary
     cast_dict = defaultdict(float)
@@ -319,4 +319,5 @@ if __name__ == "__main__":
     rows = cursor.fetchall()
     for tup in rows:
         movie_recommend_update(tup[0], m)
+        break
 
