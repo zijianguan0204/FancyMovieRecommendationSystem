@@ -319,8 +319,10 @@ def movie_suggestion():
         result.append(x)
 
     # print(result)
-    result = result[0:7]
 
+    result = random.sample(result, 8)
+    print("Here is the final recommended result")
+    print(result)
     response = jsonify(result)
     return response
     # return ""

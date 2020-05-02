@@ -117,12 +117,14 @@ def movie_recommend_update(userid, movie_statistics):
         rows = cursor_suggestion.fetchall()
         count = 0
         for tup in rows:
-            if count == 0:
+            if count == 0 and tup[0] != collection_id:
                 recommend_list.append(tup[0])
                 count += 1
             else:
                 unrecommend_list.append(tup[0])
     print("Movie collection retrieve", time.time() - start)
+    print("here is the recommend list after collection")
+    print(recommend_list)
     #
 
     movieid_list_sql = '(' + ','.join(map(str, movieid_list)) + ')'
@@ -281,8 +283,22 @@ def movie_recommend_update(userid, movie_statistics):
         recommend_list.append(_movie_id)
     print("recommend_list",recommend_list)
 
+    final_recommend_list = []
+    for movie in recommend_list:
+        if movie not in movieid_list:
+            final_recommend_list.append(movie)
+
+    final_recommend_list = set(final_recommend_list)
+    unrecommend_list = set(unrecommend_list)
+    # print("here is the recommend list before remove from unrecommend")
+    # print(recommend_list)
+
+    final_recommend_list = final_recommend_list - unrecommend_list
+    # print("here is the recommend list after remove from unrecommend")
+    # print(recommend_list)
+
     # adding list to db
-    str_recommend_list = ','.join(map(str,recommend_list))
+    str_recommend_list = ','.join(map(str,final_recommend_list))
     sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE movie_list = %s;"
     try:
         cursor_suggestion.execute(sql,(userid,str_recommend_list,str_recommend_list,))
@@ -291,7 +307,7 @@ def movie_recommend_update(userid, movie_statistics):
     except Error as e:
         print("Error while executing SQL", e)
 
-    return recommend_list
+    return final_recommend_list
 
 
 def time_variance(this_time, last_time=datetime.datetime.now()):
