@@ -318,7 +318,7 @@ def movie_suggestion():
         x['poster'] = row[2]
         result.append(x)
 
-    print(result)
+    # print(result)
     result = result[0:7]
 
     response = jsonify(result)
