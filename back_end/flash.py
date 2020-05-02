@@ -267,15 +267,15 @@ def user_rating_upd():
             print("Error while executing SQL", e)
 
         rec_movie_list = movie_recommend_update(userId, m)
-        # adding list to db
-        str_recommend_list = ','.join(map(str,rec_movie_list))
-        sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
-        try:
-        	cursor.execute(sql,(userId,str_recommend_list,userId,))
-        	connection.commit()
-        	print("successfully executed sql")
-        except Error as e:
-        	print("Error while executing SQL", e)
+        # # adding list to db
+        # str_recommend_list = ','.join(map(str,rec_movie_list))
+        # sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
+        # try:
+        # 	cursor.execute(sql,(userId,str_recommend_list,userId,))
+        # 	connection.commit()
+        # 	print("successfully executed sql")
+        # except Error as e:
+        # 	print("Error while executing SQL", e)
 
         response = jsonify("")
         return 'Success'
@@ -288,8 +288,7 @@ def movie_suggestion():
     # test
     # userid = 2103
     userid = request.args.get('userId')
-    userid = 1
-    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % 1
+    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % userid
     print(userid)
     try:
     	cursor2.execute(sql)
@@ -309,8 +308,8 @@ def movie_suggestion():
     result = []
     movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" %movieid_list_sql
-    cursor3.execute(sql)
-    rows = cursor3.fetchall()
+    cursor2.execute(sql)
+    rows = cursor2.fetchall()
 
     for row in rows:
         x = {}

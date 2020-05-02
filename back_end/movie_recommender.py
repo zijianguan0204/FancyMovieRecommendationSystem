@@ -275,11 +275,11 @@ def movie_recommend_update(userid, movie_statistics):
 
     # adding list to db
     str_recommend_list = ','.join(map(str,recommend_list))
-    sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
+    sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE movie_list = %s;"
     try:
-        cursor_suggestion.execute(sql,(userid,str_recommend_list,userid,))
+        cursor_suggestion.execute(sql,(userid,str_recommend_list,str_recommend_list,))
         connection_suggestion.commit()
-        print("successfully executed sql")
+        print("successfully insert data")
     except Error as e:
         print("Error while executing SQL", e)
 
@@ -297,7 +297,26 @@ def time_variance(this_time, last_time=datetime.datetime.now()):
     return min(math.exp((-day + 14) / 320), 1)
 
 #
-# if __name__ == "__main__":
-#     m = MovieStatistics()
-#     movie_recommend_update(7896, m)
+if __name__ == "__main__":
+    m = MovieStatistics()
+    # movie_recommend_update(2, m)
+    try:
+        connector = mysql.connector.connect(host='localhost',
+                                                        database='movie_Recommender',
+                                                        user='root',
+                                                        password=password)  # zijian
+        #  auth_plugin='mysql_native_password', # V
+        #  password='leoJ0205') # V
+        if connector.is_connected():
+            db_Info_suggestion = connector.get_server_info()
+            cursor = connector.cursor()
+            print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+
+    sql = 'SELECT DISTINCT userid FROM movie_Recommender.ratings'
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for tup in rows:
+        movie_recommend_update(tup[0], m)
 
