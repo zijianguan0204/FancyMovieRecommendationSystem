@@ -320,6 +320,7 @@ def movie_suggestion():
         result.append(x)
 
     print(result)
+    result = result[0:7]
 
     response = jsonify(result)
     return response
