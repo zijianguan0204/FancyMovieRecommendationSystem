@@ -40,8 +40,8 @@ def movie_recommend_update(userid, movie_statistics):
 
 
     #get the first 20 most popular movies as the default list
-    sql = "SELECT movieId FROM movie_Recommender.movies_metadata ORDER BY popularity DESC;"
-    cursor_suggestion.execute(sql, (userid,))
+    sql = "SELECT id FROM movie_Recommender.movies_metadata ORDER BY popularity DESC;"
+    cursor_suggestion.execute(sql)
     rows = cursor_suggestion.fetchall()
     for tup in rows:
         default_recommend_list.append(tup[0])
@@ -277,7 +277,7 @@ def movie_recommend_update(userid, movie_statistics):
     str_recommend_list = ','.join(map(str,recommend_list))
     sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
     try:
-        cursor_suggestion.execute(sql,(userid,str_recommend_list,))
+        cursor_suggestion.execute(sql,(userid,str_recommend_list,userid,))
         connection_suggestion.commit()
         print("successfully executed sql")
     except Error as e:

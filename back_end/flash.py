@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, json, jsonify
 
 import mysql.connector
 import ast
-
+import random
 from flask_cors import cross_origin
 from mysql.connector import Error
 import json
@@ -44,7 +44,20 @@ try:
         db_Info = connection2.get_server_info()
         print("Flask Connected to MySQL Server version ", db_Info)
         cursor2 = connection2.cursor()
+except Error as e:
+    print("Error while connecting to MySQL", e)
 
+try:
+    connection3 = mysql.connector.connect(host='localhost',
+                                         database='movie_Recommender',
+                                         user='root',
+                                         password=password)  # zijian
+    #  auth_plugin='mysql_native_password', # V
+    #  password='leoJ0205') # V
+    if connection3.is_connected():
+        db_Info = connection3.get_server_info()
+        print("Flask Connected to MySQL Server version ", db_Info)
+        cursor3 = connection3.cursor()
 except Error as e:
     print("Error while connecting to MySQL", e)
 
@@ -258,7 +271,7 @@ def user_rating_upd():
         str_recommend_list = ','.join(map(str,rec_movie_list))
         sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
         try:
-        	cursor.execute(sql,(userId,str_recommend_list,))
+        	cursor.execute(sql,(userId,str_recommend_list,userId,))
         	connection.commit()
         	print("successfully executed sql")
         except Error as e:
@@ -284,21 +297,33 @@ def movie_suggestion():
     	print("successfully executed sql")
     except Error as e:
     	print("Error while executing SQL", e)
-    print(rows)
+
+    rec_mov_list = []
+    for tup in rows:
+    	rec_list = tup[0]
+    rec_str = rec_list.split(",")
+
+    for movie in rec_str:
+    	rec_mov_list.append(int(movie))
 
     result = []
-    # for row in rows:
-    #     x = {}
-    #     x['id'] = row[0]
-    #     x['title'] = row[1]
-    #     x['poster'] = row[2]
-    #     result.append(x)
-    # response = jsonify(dict(rows))
-    # print(result)
+    movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
+    sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" %movieid_list_sql
+    cursor3.execute(sql)
+    rows = cursor3.fetchall()
+
+    for row in rows:
+        x = {}
+        x['id'] = row[0]
+        x['title'] = row[1]
+        x['poster'] = row[2]
+        result.append(x)
+
+    print(result)
 
     response = jsonify(result)
     return response
-    return ""
+    # return ""
     # return movie_recommender(userid)
 
 
