@@ -285,8 +285,7 @@ def user_rating_upd():
 @app.route('/movieSuggestion')
 @cross_origin()
 def movie_suggestion():
-    # test
-    # userid = 2103
+
     userid = request.args.get('userId')
     sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % userid
     print(userid)
@@ -297,20 +296,22 @@ def movie_suggestion():
     except Error as e:
     	print("Error while executing SQL", e)
 
-    rec_mov_list = []
-    for tup in rows:
-    	rec_list = tup[0]
-    rec_str = rec_list.split(",")
-
-    for movie in rec_str:
-    	rec_mov_list.append(int(movie))
-
     result = []
-    movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
+    rec_mov_list = []
+
+    if len(rows) == 0:
+    	rec_mov_list = movie_recommend_update(userid, m)
+    	movieid_list_sql = '(' + ','.join(map(str, rec_mov_list))+')'
+    else:
+	    for tup in rows:
+	    	rec_list = tup[0]
+	    rec_str = rec_list.split(",")
+	    for movie in rec_str:
+	    	rec_mov_list.append(int(movie))
+    movieid_list_sql = '(' + ','.join(map(str, rec_mov_list))+')'
     sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" %movieid_list_sql
     cursor2.execute(sql)
     rows = cursor2.fetchall()
-
     for row in rows:
         x = {}
         x['id'] = row[0]

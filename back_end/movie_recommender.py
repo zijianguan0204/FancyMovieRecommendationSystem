@@ -53,6 +53,14 @@ def movie_recommend_update(userid, movie_statistics):
     rows = cursor_suggestion.fetchall()
     #if the user is new, he has not rated any movie, recommend default
     if len(rows) == 0:
+        str_recommend_list = ','.join(map(str,default_recommend_list))
+        sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE movie_list = %s;"
+        try:
+            cursor_suggestion.execute(sql,(userid,str_recommend_list,str_recommend_list,))
+            connection_suggestion.commit()
+            print("successfully insert data as default list")
+        except Error as e:
+            print("Error while executing SQL doing default list", e)
         return default_recommend_list
 
     movieid_list = []
@@ -142,7 +150,6 @@ def movie_recommend_update(userid, movie_statistics):
 
     print("tup is below ")
     for tup in rows:
-
         print(tup)
         genre_dict[tup[1]] += (movie_rating[tup[0]]-3) * movie_rating_parameter[tup[0]]
         movie_rated_tag[tup[0]].add(tup[1])
