@@ -7,7 +7,7 @@ import time
 import math
 from collections import defaultdict
 
-password = '5557534213'
+password = ''
 
 
 def movie_recommend_update(userid, movie_statistics):
@@ -256,6 +256,9 @@ def movie_recommend_update(userid, movie_statistics):
         _numerator = 0.0
         _denominator = 0.0
 
+        if _movie_id in unrecommend_list:
+            continue
+
         # Calculate TF-IDF based on all rated movie tags
         for _movie_rated_id, _movie_rated_tag in movie_rated_tag.items():
             common = _movie_set & _movie_rated_tag
@@ -269,6 +272,7 @@ def movie_recommend_update(userid, movie_statistics):
             _denominator += tfidf
         if _denominator == 0:
             continue
+
         # calculate predicted rating
         if _numerator / _denominator > 4.5:
             recommend_list.append(_movie_id)

@@ -12,7 +12,7 @@ import datetime
 
 app = Flask(__name__)
 
-password = '5557534213'
+password = ''
 
 print("Backend Start")
 m = MovieStatistics()
@@ -296,6 +296,7 @@ def movie_suggestion():
     except Error as e:
     	print("Error while executing SQL", e)
 
+    rec_list = ''
     rec_mov_list = []
     for tup in rows:
     	rec_list = tup[0]
