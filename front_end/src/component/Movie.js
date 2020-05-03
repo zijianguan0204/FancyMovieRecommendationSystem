@@ -19,7 +19,8 @@ function Movie({match}) {
         avg_rating:3,
         released:'',
         description:'This is description',
-        user_rating:-1
+        user_rating:-1,
+        tag: ''
     });
     const [isLoad,setIsLoad] = useState(true);
     const [error,setError] = useState(null);
@@ -101,6 +102,7 @@ function Movie({match}) {
                             <li className="list-group-item"><strong>IMDb Rating: </strong> {movie.avg_rating}</li>
                             <li className="list-group-item"><strong>Director: </strong> {movie.director}</li>
                             <li className="list-group-item"><strong>Actors: </strong> {movie.actor}</li>
+                            <li className="list-group-item"><strong>Tags you may like: </strong> {movie.tag}</li>
                             <Box component="fieldset" mb={3} borderColor="transparent" style={{marginTop:'2em'}}>
                                 <h4 style={{marginBottom:'1em'}}><strong>User Rating</strong></h4>
                                 {

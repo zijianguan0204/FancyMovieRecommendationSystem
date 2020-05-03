@@ -34,9 +34,9 @@ except Error as e:
 
 try:
     connection2 = mysql.connector.connect(host='localhost',
-                                         database='movie_Recommender',
-                                         user='root',
-                                         password=password)  # zijian
+                                          database='movie_Recommender',
+                                          user='root',
+                                          password=password)  # zijian
     #  auth_plugin='mysql_native_password', # V
     #  password='leoJ0205') # V
     if connection2.is_connected():
@@ -48,9 +48,9 @@ except Error as e:
 
 try:
     connection3 = mysql.connector.connect(host='localhost',
-                                         database='movie_Recommender',
-                                         user='root',
-                                         password=password)  # zijian
+                                          database='movie_Recommender',
+                                          user='root',
+                                          password=password)  # zijian
     #  auth_plugin='mysql_native_password', # V
     #  password='leoJ0205') # V
     if connection3.is_connected():
@@ -62,17 +62,13 @@ except Error as e:
 
 print("SQL Established")
 
+
 # Get movie detail according to movie ID and user ID
 @app.route('/movie')
 @cross_origin()
 def movie():
     movieId = request.args.get('movieId')
-    userId = int(request.args.get('userId'))
-    # print(movieId)
-    # print(userId)
-    # test
-    # movieId = 862
-    # userId = 2103
+    userId = request.args.get('userId')
 
     # initialization
     id = ''
@@ -84,6 +80,29 @@ def movie():
     ave_rating = ''
     actors_str = ''
     director_str = ''
+    tag = ''
+    taste_set = set()
+    common_test = set()
+    user_rating = -1
+
+    # get user tag
+    if userId != 'null':
+        sql = "SELECT tag FROM movie_recommender.recommend_list WHERE userid = %s"
+        cursor.execute(sql, (int(userId),))
+        tag_dr = cursor.fetchall()
+        if tag_dr:
+            print(tag_dr)
+            taste_set = set(tag_dr[0][0].split(','))
+        print("taste_set", taste_set)
+
+        # get user rating
+        sql = "SELECT rating " \
+              "FROM ratings " \
+              "WHERE movieid = %s " \
+              "AND userid = %s"
+        cursor.execute(sql, (movieId, int(userId),))
+        user_rating_dr = cursor.fetchone()
+        user_rating = None if (user_rating_dr == None) else user_rating_dr[0]
 
     # get movie meta info
     sql = "SELECT id, title, poster_path, release_date, overview, vote_average " \
@@ -106,27 +125,9 @@ def movie():
     cursor.execute(sql, (movieId,))
     genres_dr = cursor.fetchall()
     if genres_dr:
-        # for genre in genres_dr:
-        #     genres_str += genre[0] + ','
-        # genres_str = genres_str[:-1]
-        genres_str = ','.join(map(lambda x:x[0],genres_dr))
-
-    # get average rating
-    # sql = "SELECT AVG(rating) AS ave_rating " \
-    # 	  "FROM ratings " \
-    # 	  "WHERE movieid = %s"
-    # cursor.execute(sql, (movieId,))
-    # ave_rating_dr = cursor.fetchone()
-    # ave_rating = ave_rating_dr[0]
-
-    # get user rating
-    sql = "SELECT rating " \
-          "FROM ratings " \
-          "WHERE movieid = %s " \
-          "AND userid = %s"
-    cursor.execute(sql, (movieId, userId,))
-    user_rating_dr = cursor.fetchone()
-    user_rating = None if (user_rating_dr == None) else user_rating_dr[0]
+        genres_str = ','.join(map(lambda x: x[0], genres_dr))
+        common_test |= set(map(lambda x: x[0], genres_dr)) & taste_set
+        print(taste_set,set(map(lambda x: x[0], genres_dr)))
 
     # get actors (cast)
     sql = "SELECT cast_infor.name " \
@@ -137,11 +138,8 @@ def movie():
     cursor.execute(sql, (int(movieId),))
     actors_dr = cursor.fetchall()
     if actors_dr:
-        # for actor in actors_dr:
-        #     actors_str += actor[0] + ','
-        # actors_str = actors_str[:-1]
         actors_str = ','.join(map(lambda x: x[0], actors_dr))
-    print("actors_str",sql)
+        common_test |= set(map(lambda x: x[0], actors_dr)) & taste_set
 
     # get director (crew)
     sql = "SELECT name " \
@@ -153,12 +151,12 @@ def movie():
     cursor.execute(sql, (int(movieId),))
     director_dr = cursor.fetchall()
     if director_dr:
-        # for director in director_dr:
-        #     director_str += director[0] + ','
-        # # director_str += director[0] + ','
-        # director_str = director_str[:-1]
         director_str = ','.join(map(lambda x: x[0], director_dr))
-        print("director_str",director_str)
+        common_test |= set(map(lambda x: x[0], director_dr)) & taste_set
+
+    if common_test:
+        print('Movie common taste', common_test)
+        tag = ','.join(list(common_test))
 
     data = {
         'id': id,
@@ -170,10 +168,9 @@ def movie():
         'avg_rating': ave_rating,
         'released': release_date,
         'description': description,
-        'user_rating': user_rating
+        'user_rating': user_rating,
+        'tag': tag
     }
-
-    # cursor.close()
 
     response = jsonify(data)
     return response
@@ -195,7 +192,7 @@ def movie_search():
 
     # cursor.close()
 
-     # each row
+    # each row
     result = []
     for row in rows:
         x = {}
@@ -216,7 +213,10 @@ def movie_search():
 def user_rating_history():
     # test
     # userid = 2103
-    userid = int(request.args.get('userId'))
+    try:
+        userid = int(request.args.get('userId'))
+    except ValueError:
+        return ''
 
     sql = "SELECT id, title, poster_path, rating " \
           "FROM movie_Recommender.ratings " \
@@ -236,7 +236,7 @@ def user_rating_history():
         x['poster'] = row[2]
         x['rating'] = row[3]
         result.append(x)
-    
+
     response = jsonify(result)
     return response
 
@@ -259,7 +259,7 @@ def user_rating_upd():
 
         sql = "INSERT INTO ratings (userid, movieid, rating, timestamp) VALUES(%s, %s, %s, %s) ON DUPLICATE KEY UPDATE rating = %s, timestamp = %s;"
         try:
-            cursor.execute(sql,(userId,movieId,rating,timestamp,rating,timestamp,))
+            cursor.execute(sql, (userId, movieId, rating, timestamp, rating, timestamp,))
             connection.commit()
             print("successfully executed sql")
         except Error as e:
@@ -284,32 +284,33 @@ def user_rating_upd():
 @app.route('/movieSuggestion')
 @cross_origin()
 def movie_suggestion():
-
     userid = request.args.get('userId')
     sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % userid
     print(userid)
+    rows = []
     try:
-    	cursor2.execute(sql)
-    	rows = cursor2.fetchall()
-    	print("successfully executed sql")
+        cursor2.execute(sql)
+        rows = cursor2.fetchall()
+        print("successfully executed sql", rows)
     except Error as e:
-    	print("Error while executing SQL", e)
+        print("Error while executing SQL", e)
 
     result = []
     rec_list = ''
     rec_mov_list = []
 
-    if len(rows) == 0:
-    	rec_mov_list = movie_recommend_update(userid, m)
-    	movieid_list_sql = '(' + ','.join(map(str, rec_mov_list))+')'
+    if not rows or len(rows) == 0:
+        rec_mov_list = movie_recommend_update(userid, m)
+        movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     else:
-	    for tup in rows:
-	    	rec_list = tup[0]
-	    rec_str = rec_list.split(",")
-	    for movie in rec_str:
-	    	rec_mov_list.append(int(movie))
-    movieid_list_sql = '(' + ','.join(map(str, rec_mov_list))+')'
-    sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" %movieid_list_sql
+        for tup in rows:
+            rec_list = tup[0]
+        rec_str = rec_list.split(",")
+        for movie in rec_str:
+            rec_mov_list.append(int(movie))
+    movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
+    print('retrieve movie list', movieid_list_sql)
+    sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" % movieid_list_sql
     cursor2.execute(sql)
     rows = cursor2.fetchall()
     for row in rows:

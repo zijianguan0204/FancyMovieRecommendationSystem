@@ -49,7 +49,7 @@ function Search() {
             <div className="jumbotron">
                 <h3 className="text-center">Search For Any Movie</h3>
                 <form className="form-inline" id="searchForm" >
-                    <input type="text" className="form-control" id="searchText" placeholder="Search Movies... Try: HP"
+                    <input type="text" className="form-control" id="searchText" placeholder="Search Movies... Try: Harry"
                            onChange={(event => {
                                setSearch(event.target.value);
                            })}
