@@ -148,5 +148,6 @@ DROP TABLE IF EXISTS `movie_recommender`.`recommend_list`;
 CREATE TABLE `movie_recommender`.`recommend_list` (
     `userid` int NOT NULL,
     `movie_list` varchar(255),
+    `tag` varchar(255),
     PRIMARY KEY (`userid`)
 );
