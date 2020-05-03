@@ -155,8 +155,9 @@ def movie_recommend_update(userid, movie_statistics):
         movie_rated_tag[tup[0]].add(tup[1])
     
     total_dict.update(genre_dict)
-    print(genre_dict)
+
     print("Movie genre retrieve", time.time() - start)
+
 
     # get all cast into dictionary
     cast_dict = defaultdict(float)
@@ -262,6 +263,9 @@ def movie_recommend_update(userid, movie_statistics):
         _numerator = 0.0
         _denominator = 0.0
 
+        if _movie_id in unrecommend_list:
+            continue
+
         # Calculate TF-IDF based on all rated movie tags
         for _movie_rated_id, _movie_rated_tag in movie_rated_tag.items():
             common = _movie_set & _movie_rated_tag
@@ -275,6 +279,7 @@ def movie_recommend_update(userid, movie_statistics):
             _denominator += tfidf
         if _denominator == 0:
             continue
+
         # calculate predicted rating
         if _numerator / _denominator > 4.5:
             recommend_list.append(_movie_id)
@@ -350,4 +355,5 @@ if __name__ == "__main__":
     rows = cursor.fetchall()
     for tup in rows:
         movie_recommend_update(tup[0], m)
+        break
 
