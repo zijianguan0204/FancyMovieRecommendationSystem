@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cffc07aa-0ff1-47bf-a8a9-0c625da4f292" name="Default Changelist" comment="" />
+    <list default="true" id="cffc07aa-0ff1-47bf-a8a9-0c625da4f292" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../back_end/flash.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/flash.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../back_end/movie_recommender.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/movie_recommender.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../back_end/movie_statistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/movie_statistics.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +47,11 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="G:\Program Files\JetBrains\WebStorm 2019.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\CMPE256\FancyMovieRecommendationSystem\front_end\src" />
+    </key>
   </component>
   <component name="RunManager" selected="npm.npm start">
     <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
@@ -108,7 +117,7 @@
       <workItem from="1588448946453" duration="1834000" />
       <workItem from="1588466876167" duration="2812000" />
       <workItem from="1588569211711" duration="700000" />
-      <workItem from="1588627555971" duration="1011000" />
+      <workItem from="1588627555971" duration="2619000" />
     </task>
     <servers />
   </component>
