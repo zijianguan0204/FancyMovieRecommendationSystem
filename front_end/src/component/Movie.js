@@ -6,6 +6,8 @@ import logo from "../logo.svg"
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import {Link} from "react-router-dom";
+import image_not_found from "../not_found.png";
+
 
 const config=require('../config/default');
 
@@ -92,7 +94,9 @@ function Movie({match}) {
             <div>
                 <div className="row">
                     <div className="col-md-4" >
-                        <img src={'https://image.tmdb.org/t/p/original'+movie.poster} className="thumbnail" alt={"Poster"} />
+                        <img src={'https://image.tmdb.org/t/p/original'+movie.poster} className="thumbnail" alt={"Poster"} onError={(e) => {
+                            e.target.src = image_not_found //replacement image imported above
+                        }}/>
                     </div>
                     <div className="col-md-8">
                         <h2 style={{marginBottom:'1em'}}>{movie.title}</h2>

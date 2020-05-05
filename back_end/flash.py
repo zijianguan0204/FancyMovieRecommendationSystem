@@ -285,16 +285,17 @@ def user_rating_upd():
 @cross_origin()
 def movie_suggestion():
     userid = request.args.get('userId')
-
-    sql = "SELECT movie_list,tag FROM movie_recommender.recommend_list where userid = %s" % userid
-    print(userid)
     rows = []
 
     try:
+        sql = "SELECT movie_list,tag FROM movie_recommender.recommend_list where userid = %s" % int(userid)
+        print(userid)
         cursor2.execute(sql)
         rows = cursor2.fetchall()
         print("successfully executed sql", rows)
     except Error as e:
+        print("Error while executing SQL", e)
+    except ValueError as e:
         print("Error while executing SQL", e)
 
     result = {}
@@ -308,7 +309,8 @@ def movie_suggestion():
     else:
         for tup in rows:
             rec_list = tup[0]
-            user_tags = set(tup[1].split(","))
+            if tup[1]:
+                user_tags = set(tup[1].split(","))
         rec_str = rec_list.split(",")
         for movie in rec_str:
             rec_mov_list.append(int(movie))

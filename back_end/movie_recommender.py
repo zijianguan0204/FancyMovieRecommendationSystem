@@ -214,7 +214,8 @@ def movie_recommend_update(userid, movie_statistics):
     n = 15
     if len(top_tags) > n:
         top_tags = top_tags[0:n]
-    elif len(top_tags) < 3:
+    elif len(top_tags) < 2:
+        print('tag list is too short to record',top_tags)
         return default_recommend_list
 
     tag_score = {}
