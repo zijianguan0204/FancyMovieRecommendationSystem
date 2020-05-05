@@ -265,7 +265,7 @@ def user_rating_upd():
         except Error as e:
             print("Error while executing SQL", e)
 
-        rec_movie_list = movie_recommend_update(userId, m)
+        movie_recommend_update(userId, m)
         # # adding list to db
         # str_recommend_list = ','.join(map(str,rec_movie_list))
         # sql = "INSERT INTO recommend_list (userid, movie_list) VALUES(%s, %s) ON DUPLICATE KEY UPDATE userid = %s;"
@@ -276,7 +276,6 @@ def user_rating_upd():
         # except Error as e:
         # 	print("Error while executing SQL", e)
 
-        response = jsonify("")
         return 'Success'
 
 
@@ -292,7 +291,7 @@ def movie_suggestion():
         print(userid)
         cursor2.execute(sql)
         rows = cursor2.fetchall()
-        print("successfully executed sql", rows)
+        print("successfully get recommend list", rows)
     except Error as e:
         print("Error while executing SQL", e)
     except ValueError as e:
@@ -304,7 +303,7 @@ def movie_suggestion():
     user_tags = set()
 
     if not rows or len(rows) == 0:
-        rec_mov_list = movie_recommend_update(userid, m)
+        rec_mov_list, user_tags = movie_recommend_update(userid, m)
         # movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     else:
         for tup in rows:
@@ -352,12 +351,12 @@ def movie_suggestion():
             result[row[0]]['tag'] |= user_tags & set([row[1]])
 
     result = [val for k, val in result.items()]
-
-    result = random.sample(result, 8)
+    if len(result) > 8:
+        result = random.sample(result, 8)
     print("Here is the final recommended result")
     for _movie in result:
         _movie['tag'] = ', '.join(list(_movie['tag']))
-        print(_movie['title'],_movie['tag'])
+        print(_movie['title'], _movie['tag'])
     response = jsonify(result)
     return response
     # return ""

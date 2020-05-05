@@ -47,7 +47,7 @@ def movie_recommend_update(userid, movie_statistics):
     default_recommend_list = default_recommend_list[0:19]
 
     if not userid:
-        return default_recommend_list
+        return default_recommend_list,set()
 
     # get all movie Id that the user rated >=4 into list
     sql = "SELECT movieId,timestamp,rating FROM movie_Recommender.ratings WHERE userid = %s AND rating >= 4"
@@ -64,7 +64,7 @@ def movie_recommend_update(userid, movie_statistics):
         except Error as e:
             print("Error while executing SQL doing default list", e)
         print('Return Default Recommend List')
-        return default_recommend_list
+        return default_recommend_list,set()
 
     movieid_list = []
     movie_rating = {}
@@ -216,7 +216,7 @@ def movie_recommend_update(userid, movie_statistics):
         top_tags = top_tags[0:n]
     elif len(top_tags) < 2:
         print('tag list is too short to record',top_tags)
-        return default_recommend_list
+        return default_recommend_list,set()
 
     tag_score = {}
     for tup in top_tags:
@@ -225,10 +225,9 @@ def movie_recommend_update(userid, movie_statistics):
     print("Movie tag retrive", time.time() - start)
     print("below is the top_tags")
     print(top_tags)
-    tag_sum = sum(map(lambda x: x[1], top_tags)) / 2
 
     if not top_tags:
-        return default_recommend_list
+        return default_recommend_list, set()
 
     # Create candidate list
     candidate = defaultdict(set)
@@ -351,7 +350,9 @@ def movie_recommend_update(userid, movie_statistics):
     except Error as e:
         print("Error while executing SQL", e)
 
-    return final_recommend_list
+    print(set(map(lambda x: x[0], top_tags)))
+
+    return final_recommend_list,set(map(lambda x: x[0], top_tags))
 
 
 def time_variance(this_time, last_time=datetime.datetime.now()):
