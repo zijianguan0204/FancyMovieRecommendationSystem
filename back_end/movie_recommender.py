@@ -7,7 +7,7 @@ import time
 import math
 from collections import defaultdict
 
-password = ''
+password = '5557534213'
 
 
 def movie_recommend_update(userid, movie_statistics):
@@ -113,9 +113,8 @@ def movie_recommend_update(userid, movie_statistics):
             final_movie_list.append(tup[0])
 
     # add movie in the same collection into the recommend/unrecommend list
-
     collection_list = []
-    for movieid in movieid_list:
+    for movieid in final_movie_list:
         sql = "SELECT collection FROM movie_Recommender.movies_metadata WHERE id = %s"
         cursor_suggestion.execute(sql, (movieid,))
         rows = cursor_suggestion.fetchall()
@@ -168,7 +167,7 @@ def movie_recommend_update(userid, movie_statistics):
     cursor_suggestion.execute(sql)
     rows = cursor_suggestion.fetchall()
     for tup in rows:
-        cast_dict[tup[1]] += ((movie_rating[tup[0]] - 3) * movie_rating_parameter[tup[0]]) ** 2
+        cast_dict[tup[1]] += ((movie_rating[tup[0]] - 3) * movie_rating_parameter[tup[0]])
         movie_rated_tag[tup[0]].add(tup[1])
     total_dict.update(cast_dict)
     print("Movie cast retrieve", time.time() - start)
@@ -180,7 +179,7 @@ def movie_recommend_update(userid, movie_statistics):
     cursor_suggestion.execute(sql)
     rows = cursor_suggestion.fetchall()
     for tup in rows:
-        director_dict[tup[1]] += ((movie_rating[tup[0]] - 3) * movie_rating_parameter[tup[0]])**2
+        director_dict[tup[1]] += ((movie_rating[tup[0]] - 3) * movie_rating_parameter[tup[0]])
         movie_rated_tag[tup[0]].add(tup[1])
     total_dict.update(director_dict)
     # print("Movie crew retrieve", time.time() - start)
@@ -310,9 +309,9 @@ def movie_recommend_update(userid, movie_statistics):
     for _, _movie_list in sorted(waiting_list.items(), key=lambda x: x[0], reverse=True):
         if len(recommend_list) > 20:
             break
-            print(_)
+            # print(_)
         for (_movie_id,_) in sorted(_movie_list,key=lambda x: x[1], reverse= True):
-            print('Movie Score', _movie_id,_)
+            # print('Movie Score', _movie_id,_)
             if len(recommend_list) > 20:
                 break
             recommend_list.append(_movie_id)
@@ -368,24 +367,24 @@ def time_variance(this_time, last_time=datetime.datetime.now()):
 #
 if __name__ == "__main__":
     m = MovieStatistics()
-    movie_recommend_update(50, m)
-    # try:
-    #     connector = mysql.connector.connect(host='localhost',
-    #                                         database='movie_Recommender',
-    #                                         user='root',
-    #                                         password=password)  # zijian
-    #     #  auth_plugin='mysql_native_password', # V
-    #     #  password='leoJ0205') # V
-    #     if connector.is_connected():
-    #         db_Info_suggestion = connector.get_server_info()
-    #         cursor = connector.cursor()
-    #         print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
-    # except Error as e:
-    #     print("Error while connecting to MySQL", e)
-    #
-    # sql = 'SELECT DISTINCT userid FROM movie_Recommender.ratings'
-    # cursor.execute(sql)
-    # rows = cursor.fetchall()
-    # for tup in rows:
-    #     movie_recommend_update(tup[0], m)
-    #     break
+    # movie_recommend_update(50, m)
+    try:
+        connector = mysql.connector.connect(host='localhost',
+                                            database='movie_Recommender',
+                                            user='root',
+                                            password=password)  # zijian
+        #  auth_plugin='mysql_native_password', # V
+        #  password='leoJ0205') # V
+        if connector.is_connected():
+            db_Info_suggestion = connector.get_server_info()
+            cursor = connector.cursor()
+            print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+
+    sql = 'SELECT DISTINCT userid FROM movie_Recommender.ratings'
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for tup in rows:
+        movie_recommend_update(tup[0], m)
+        break

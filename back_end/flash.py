@@ -12,7 +12,7 @@ import datetime
 
 app = Flask(__name__)
 
-password = ''
+password = '5557534213'
 
 print("Backend Start")
 m = MovieStatistics()
@@ -90,8 +90,7 @@ def movie():
         sql = "SELECT tag FROM movie_recommender.recommend_list WHERE userid = %s"
         cursor.execute(sql, (int(userId),))
         tag_dr = cursor.fetchall()
-        if tag_dr:
-            print(tag_dr)
+        if tag_dr and tag_dr[0] and tag_dr[0][0]:
             taste_set = set(tag_dr[0][0].split(','))
         print("taste_set", taste_set)
 
@@ -127,7 +126,7 @@ def movie():
     if genres_dr:
         genres_str = ','.join(map(lambda x: x[0], genres_dr))
         common_test |= set(map(lambda x: x[0], genres_dr)) & taste_set
-        print(taste_set,set(map(lambda x: x[0], genres_dr)))
+        print(taste_set, set(map(lambda x: x[0], genres_dr)))
 
     # get actors (cast)
     sql = "SELECT cast_infor.name " \
@@ -186,7 +185,7 @@ def movie_search():
 
     sql = "SELECT id, title, poster_path " \
           "FROM movies_metadata " \
-          "WHERE upper(title) like concat(upper(%s), '%')"
+          "WHERE upper(title) like concat('%',concat(upper(%s), '%'))"  # Harry%  Harry XXX
     cursor.execute(sql, (search_input.strip(),))
     rows = cursor.fetchall()
 
@@ -199,6 +198,7 @@ def movie_search():
         x['id'] = row[0]
         x['title'] = row[1]
         x['poster'] = row[2]
+        x['tag'] = []
         result.append(x)
     # response = jsonify(dict(rows))
     # print(result)
@@ -285,9 +285,11 @@ def user_rating_upd():
 @cross_origin()
 def movie_suggestion():
     userid = request.args.get('userId')
-    sql = "SELECT movie_list FROM movie_recommender.recommend_list where userid = %s" % userid
+
+    sql = "SELECT movie_list,tag FROM movie_recommender.recommend_list where userid = %s" % userid
     print(userid)
     rows = []
+
     try:
         cursor2.execute(sql)
         rows = cursor2.fetchall()
@@ -295,16 +297,18 @@ def movie_suggestion():
     except Error as e:
         print("Error while executing SQL", e)
 
-    result = []
+    result = {}
     rec_list = ''
     rec_mov_list = []
+    user_tags = set()
 
     if not rows or len(rows) == 0:
         rec_mov_list = movie_recommend_update(userid, m)
-        movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
+        # movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     else:
         for tup in rows:
             rec_list = tup[0]
+            user_tags = set(tup[1].split(","))
         rec_str = rec_list.split(",")
         for movie in rec_str:
             rec_mov_list.append(int(movie))
@@ -318,13 +322,40 @@ def movie_suggestion():
         x['id'] = row[0]
         x['title'] = row[1]
         x['poster'] = row[2]
-        result.append(x)
+        x['tag'] = set()
+        result[row[0]] = x
 
-    # print(result)
+    sql = "SELECT id, genre FROM movie_Recommender.movie_genre " \
+          "WHERE id in %s" % movieid_list_sql
+    cursor2.execute(sql)
+    rows = cursor2.fetchall()
+    for row in rows:
+        if row[0] in result:
+            result[row[0]]['tag'] |= user_tags & set([row[1]])
+
+    sql = "SELECT movie_id,name FROM movie_Recommender.movie_cast INNER JOIN movie_Recommender.cast_infor " \
+          "WHERE cast_id = id AND movie_id in %s" % movieid_list_sql
+    cursor2.execute(sql)
+    rows = cursor2.fetchall()
+    for row in rows:
+        if row[0] in result:
+            result[row[0]]['tag'] |= user_tags & set([row[1]])
+
+    sql = "SELECT movie_id,name FROM movie_Recommender.movie_crew INNER JOIN movie_Recommender.crew_info " \
+          "WHERE crew_id = id AND job = 'Director' AND movie_id in %s " % movieid_list_sql
+    cursor2.execute(sql)
+    rows = cursor2.fetchall()
+    for row in rows:
+        if row[0] in result:
+            result[row[0]]['tag'] |= user_tags & set([row[1]])
+
+    result = [val for k, val in result.items()]
 
     result = random.sample(result, 8)
     print("Here is the final recommended result")
-    print(result)
+    for _movie in result:
+        _movie['tag'] = ', '.join(list(_movie['tag']))
+        print(_movie['title'],_movie['tag'])
     response = jsonify(result)
     return response
     # return ""
@@ -332,5 +363,5 @@ def movie_suggestion():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)  # zijian
+    app.run(debug=False)  # zijian
 # app.run(port=5001)
