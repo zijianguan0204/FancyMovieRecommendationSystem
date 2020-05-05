@@ -183,6 +183,9 @@ def movie_search():
     # search_input = 'Harry Potter'
     search_input = request.args.get('search')
 
+    if not search_input:
+        return ''
+
     sql = "SELECT id, title, poster_path " \
           "FROM movies_metadata " \
           "WHERE upper(title) like concat('%',concat(upper(%s), '%'))"  # Harry%  Harry XXX
@@ -314,7 +317,11 @@ def movie_suggestion():
                 user_tags = set(tup[1].split(","))
         rec_str = rec_list.split(",")
         for movie in rec_str:
-            rec_mov_list.append(int(movie))
+            if movie:
+                rec_mov_list.append(int(movie))
+    if len(rec_mov_list) <= 0:
+        rec_mov_list, user_tags = movie_recommend_update(userid, m)
+
     movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     print('retrieve movie list', movieid_list_sql)
     print('retrieve tag list', user_tags)

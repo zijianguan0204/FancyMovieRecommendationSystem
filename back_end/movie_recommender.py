@@ -80,6 +80,13 @@ def movie_recommend_update(userid, movie_statistics):
         temp_timestamp = datetime.datetime.fromtimestamp(float(val))
         movie_rating_parameter[key] = time_variance(temp_timestamp, max_timestamp)
 
+    # Remove all low rating movies
+    sql = "SELECT movieId FROM movie_Recommender.ratings WHERE userid = %s AND rating <= 3"
+    cursor_suggestion.execute(sql, (userid,))
+    rows = cursor_suggestion.fetchall()
+    for tup in rows:
+        unrecommend_list.append(tup[0])
+
     # get all movie rated within 14 days into list
     recent_list = []
     for movieid in movieid_list:
@@ -208,9 +215,13 @@ def movie_recommend_update(userid, movie_statistics):
 
     # get top 15 tags
     top_tags = []
+    try:
+        tag_max = max(total_dict.values())
+    except ValueError:
+        return default_recommend_list, set()
     for k, val in sorted(total_dict.items(), key=lambda x: x[1], reverse=True):
         # print('tag', k, val)
-        if val > 2:
+        if val >= 2 or tag_max <= 2 and val > 1:
             top_tags.append((k, val))
     n = 15
     if len(top_tags) > n:
@@ -266,6 +277,7 @@ def movie_recommend_update(userid, movie_statistics):
             candidate[tup[0]].add(tup[1])
 
     print("candidate retrieve", time.time() - start)
+    print("num of candidate", len(candidate))
 
     # Algorithm start
     count = 0
@@ -300,17 +312,18 @@ def movie_recommend_update(userid, movie_statistics):
             continue
 
         # calculate predicted rating
-        if _numerator / _denominator > 4:
+        if _numerator / _denominator >= 4:
             score = 0
             for tag in _movie_set:
                 score += tag_check[tag]
             waiting_list[round(_numerator / _denominator, 1)].append((_movie_id, score))
         count += 1
-
+    # print('waiting_list', waiting_list)
     for _, _movie_list in sorted(waiting_list.items(), key=lambda x: x[0], reverse=True):
+        # print('movie estimate rating',_)
         if len(recommend_list) > 20:
             break
-            # print(_)
+
         for (_movie_id, _) in sorted(_movie_list, key=lambda x: x[1], reverse=True):
             # print('Movie Score', _movie_id,_)
             if len(recommend_list) > 20:
@@ -389,4 +402,4 @@ if __name__ == "__main__":
     rows = cursor.fetchall()
     for tup in rows:
         movie_recommend_update(tup[0], m)
-        break
+

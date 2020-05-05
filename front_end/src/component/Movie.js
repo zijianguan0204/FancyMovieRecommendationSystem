@@ -103,7 +103,7 @@ function Movie({match}) {
                         <ul className="list-group">
                             <li className="list-group-item"><strong>Genre: </strong> {movie.genre}</li>
                             <li className="list-group-item"><strong>Released: </strong> {movie.released}</li>
-                            <li className="list-group-item"><strong>IMDb Rating: </strong> {movie.avg_rating}</li>
+                            <li className="list-group-item"><strong>TMDb Rating: </strong> {movie.avg_rating}</li>
                             <li className="list-group-item"><strong>Director: </strong> {movie.director}</li>
                             <li className="list-group-item"><strong>Actors: </strong> {movie.actor}</li>
                             <li className="list-group-item"><strong>Tags you may like: </strong> {movie.tag}</li>
