@@ -12,7 +12,7 @@ import datetime
 
 app = Flask(__name__)
 
-password = '5557534213'
+password = ''
 
 print("Backend Start")
 m = MovieStatistics()
