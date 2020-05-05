@@ -288,9 +288,11 @@ def movie_suggestion():
 
     try:
         sql = "SELECT movie_list,tag FROM movie_recommender.recommend_list where userid = %s" % int(userid)
-        print(userid)
+        print("Start to get recommend list",userid)
+        connection2.commit()
         cursor2.execute(sql)
         rows = cursor2.fetchall()
+
         print("successfully get recommend list", rows)
     except Error as e:
         print("Error while executing SQL", e)
@@ -315,6 +317,7 @@ def movie_suggestion():
             rec_mov_list.append(int(movie))
     movieid_list_sql = '(' + ','.join(map(str, rec_mov_list)) + ')'
     print('retrieve movie list', movieid_list_sql)
+    print('retrieve tag list', user_tags)
     sql = "SELECT id, title, poster_path FROM movies_metadata WHERE id in %s" % movieid_list_sql
     cursor2.execute(sql)
     rows = cursor2.fetchall()

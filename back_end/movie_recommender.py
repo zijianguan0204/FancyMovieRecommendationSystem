@@ -32,7 +32,7 @@ def movie_recommend_update(userid, movie_statistics):
     except Error as e:
         print("Error while connecting to MySQL", e)
 
-    print(userid)
+    print('user id', userid)
     start = time.time()
     recommend_list = []
     default_recommend_list = []
@@ -47,7 +47,7 @@ def movie_recommend_update(userid, movie_statistics):
     default_recommend_list = default_recommend_list[0:19]
 
     if not userid:
-        return default_recommend_list,set()
+        return default_recommend_list, set()
 
     # get all movie Id that the user rated >=4 into list
     sql = "SELECT movieId,timestamp,rating FROM movie_Recommender.ratings WHERE userid = %s AND rating >= 4"
@@ -64,7 +64,7 @@ def movie_recommend_update(userid, movie_statistics):
         except Error as e:
             print("Error while executing SQL doing default list", e)
         print('Return Default Recommend List')
-        return default_recommend_list,set()
+        return default_recommend_list, set()
 
     movieid_list = []
     movie_rating = {}
@@ -129,8 +129,9 @@ def movie_recommend_update(userid, movie_statistics):
         count = 0
         for tup in rows:
             if count == 0 and tup[0] != collection_id:
-                recommend_list.append(tup[0])
-                count += 1
+                if tup[0] not in recommend_list:
+                    recommend_list.append(tup[0])
+                    count += 1
             else:
                 unrecommend_list.append(tup[0])
     print("Movie collection retrieve", time.time() - start)
@@ -215,8 +216,8 @@ def movie_recommend_update(userid, movie_statistics):
     if len(top_tags) > n:
         top_tags = top_tags[0:n]
     elif len(top_tags) < 2:
-        print('tag list is too short to record',top_tags)
-        return default_recommend_list,set()
+        print('tag list is too short to record, return default list', top_tags)
+        return default_recommend_list, set()
 
     tag_score = {}
     for tup in top_tags:
@@ -302,15 +303,15 @@ def movie_recommend_update(userid, movie_statistics):
         if _numerator / _denominator > 4:
             score = 0
             for tag in _movie_set:
-                score += tag_score[tag]
-            waiting_list[round(_numerator / _denominator,1)].append((_movie_id,score))
+                score += tag_check[tag]
+            waiting_list[round(_numerator / _denominator, 1)].append((_movie_id, score))
         count += 1
 
     for _, _movie_list in sorted(waiting_list.items(), key=lambda x: x[0], reverse=True):
         if len(recommend_list) > 20:
             break
             # print(_)
-        for (_movie_id,_) in sorted(_movie_list,key=lambda x: x[1], reverse= True):
+        for (_movie_id, _) in sorted(_movie_list, key=lambda x: x[1], reverse=True):
             # print('Movie Score', _movie_id,_)
             if len(recommend_list) > 20:
                 break
@@ -343,16 +344,15 @@ def movie_recommend_update(userid, movie_statistics):
           "ON DUPLICATE KEY UPDATE movie_list = %s, tag = %s;"
     try:
         cursor_suggestion.execute(sql, (
-        userid, str_recommend_list, ','.join(map(lambda x: x[0], top_tags)), str_recommend_list,
-        ','.join(map(lambda x: x[0], top_tags))))
+            userid, str_recommend_list, ','.join(map(lambda x: x[0], top_tags)), str_recommend_list,
+            ','.join(map(lambda x: x[0], top_tags))))
         connection_suggestion.commit()
         print("successfully insert data")
     except Error as e:
         print("Error while executing SQL", e)
+    connection_suggestion.close()
 
-    print(set(map(lambda x: x[0], top_tags)))
-
-    return final_recommend_list,set(map(lambda x: x[0], top_tags))
+    return final_recommend_list, set(map(lambda x: x[0], top_tags))
 
 
 def time_variance(this_time, last_time=datetime.datetime.now()):
