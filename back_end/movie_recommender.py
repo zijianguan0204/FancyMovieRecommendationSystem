@@ -135,7 +135,7 @@ def movie_recommend_update(userid, movie_statistics):
         rows = cursor_suggestion.fetchall()
         count = 0
         for tup in rows:
-            if count == 0 and tup[0] != collection_id:
+            if count == 0 and tup[0] != collection_id and tup[0] not in unrecommend_list:
                 if tup[0] not in recommend_list:
                     recommend_list.append(tup[0])
                     count += 1
@@ -343,7 +343,10 @@ def movie_recommend_update(userid, movie_statistics):
             final_recommend_list.append(movie)
 
     final_recommend_list = set(final_recommend_list)
+
     unrecommend_list = set(unrecommend_list)
+    print(final_recommend_list)
+    print(unrecommend_list)
     # print("here is the recommend list before remove from unrecommend")
     # print(recommend_list)
 
@@ -382,24 +385,25 @@ def time_variance(this_time, last_time=datetime.datetime.now()):
 #
 if __name__ == "__main__":
     m = MovieStatistics()
-    # movie_recommend_update(50, m)
-    try:
-        connector = mysql.connector.connect(host='localhost',
-                                            database='movie_Recommender',
-                                            user='root',
-                                            password=password)  # zijian
-        #  auth_plugin='mysql_native_password', # V
-        #  password='leoJ0205') # V
-        if connector.is_connected():
-            db_Info_suggestion = connector.get_server_info()
-            cursor = connector.cursor()
-            print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
-    except Error as e:
-        print("Error while connecting to MySQL", e)
+    movie_recommend_update(789456, m)
 
-    sql = 'SELECT DISTINCT userid FROM movie_Recommender.ratings'
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-    for tup in rows:
-        movie_recommend_update(tup[0], m)
+    # try:
+    #     connector = mysql.connector.connect(host='localhost',
+    #                                         database='movie_Recommender',
+    #                                         user='root',
+    #                                         password=password)  # zijian
+    #     #  auth_plugin='mysql_native_password', # V
+    #     #  password='leoJ0205') # V
+    #     if connector.is_connected():
+    #         db_Info_suggestion = connector.get_server_info()
+    #         cursor = connector.cursor()
+    #         print("Movie Recommender Connected to MySQL Server version ", db_Info_suggestion)
+    # except Error as e:
+    #     print("Error while connecting to MySQL", e)
+    #
+    # sql = 'SELECT DISTINCT userid FROM movie_Recommender.ratings'
+    # cursor.execute(sql)
+    # rows = cursor.fetchall()
+    # for tup in rows:
+    #     movie_recommend_update(tup[0], m)
 

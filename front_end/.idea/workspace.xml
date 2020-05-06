@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cffc07aa-0ff1-47bf-a8a9-0c625da4f292" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../back_end/flash.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/flash.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back_end/movie_recommender.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/movie_recommender.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back_end/movie_statistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/../back_end/movie_statistics.py" afterDir="false" />
-    </list>
+    <list default="true" id="cffc07aa-0ff1-47bf-a8a9-0c625da4f292" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -119,6 +115,7 @@
       <workItem from="1588569211711" duration="700000" />
       <workItem from="1588627555971" duration="5824000" />
       <workItem from="1588669077369" duration="865000" />
+      <workItem from="1588716187587" duration="1199000" />
     </task>
     <servers />
   </component>
