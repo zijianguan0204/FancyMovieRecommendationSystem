@@ -35,7 +35,7 @@ It may take long time to run.
    
 Or you can generate certain user's recommend list:
 ```
-python movie_recommendersingle_user.py [user id]
+python movie_recommender_single_user.py [user id]
 ```
 Run Backend:
 ```
