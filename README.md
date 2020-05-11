@@ -18,12 +18,10 @@ remember to change load file address
 ```
 LOAD DATA local INFILE  '[your location]\FancyMovieRecommendationSystem\data\cast_info.csv' INTO TABLE 
 ```
-Open console in backend folder   
+Open console in back_end folder   
 Install package
 ```
 pip install flask
-pip install flask_mysqldb
-pip install flask_cors
 pip install mysql_connector_python
 ```
 
