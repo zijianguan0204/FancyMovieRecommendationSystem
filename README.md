@@ -1,17 +1,47 @@
 # FancyMovieRecommendationSystem
-- Data Import
 
-  - File movies_metadata.csv -> Table [movies_metadata]
-    1. Run script data_prep.py on the original csv file movies_metadata.csv, to generate movies_metadata_new.csv;
-    2. Save and import (using correspinding part in movierecommender.sql)
-    
-Before testing, please make sure you have yoru database set up
-For testing, please follow the steps
-1. open one terminal go to back_end folder, then "python3/python flash.py"
-2. open another terminal, go to front_end folder and then "npm install:, "npm start"
-3. After the page pop up in your browser, change the URL to be : http://localhost:3000/movie/123, it is a testing page, you will see the Movie title as toystory has been passed to the front end and also the released date.
+## Install Tutorial
+### For Frontend:   
+Open console in front_end folder   
+package install
+```
+npm install 
+```
+Run frontend
+```
+npm start
+```
+### For Backend:
+Run database_query_table.sql in SQL   
+Download rating_processed.csv file into data from https://drive.google.com/open?id=1y5f88zJIsDxsnxVRD1dykD9plU2xW2L1   
+remember to change load file address     
+```
+LOAD DATA local INFILE  '[your location]\FancyMovieRecommendationSystem\data\cast_info.csv' INTO TABLE 
+```
+Open console in back_end folder   
+Install package
+```
+pip install flask
+pip install mysql_connector_python
+```
 
-Until now, all connections are built, we can start query data from database to the front end.
+You can change db user name and password in config.py
+
+To generate recommended list for all old ratings:
+```
+python movie_recommender.py
+```
+It may take long time to run.   
+   
+Or you can generate certain user's recommend list:
+```
+python movie_recommendersingle_user.py [user id]
+```
+Run Backend:
+```
+python flash.py
+```
+
 
 ## API  
 ### Search   
