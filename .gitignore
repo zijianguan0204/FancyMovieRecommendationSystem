@@ -8,3 +8,5 @@ node_modules/
 front_end/.idea/inspectionProfiles/Project_Default.xml
 front_end/.idea/inspectionProfiles/Project_Default.xml
 front_end/.idea/workspace.xml
+rating_processed.csv
+ratings.csv
