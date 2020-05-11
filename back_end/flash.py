@@ -9,6 +9,7 @@ import json
 from movie_recommender import movie_recommend_update
 from movie_statistics import MovieStatistics
 import datetime
+import config
 
 app = Flask(__name__)
 
@@ -21,8 +22,8 @@ m = MovieStatistics()
 try:
     connection = mysql.connector.connect(host='localhost',
                                          database='movie_Recommender',
-                                         user='root',
-                                         password=password)
+                                         user=config.user,
+                                         password=config.password)
 
     if connection.is_connected():
         db_Info = connection.get_server_info()
@@ -34,9 +35,9 @@ except Error as e:
 
 try:
     connection2 = mysql.connector.connect(host='localhost',
-                                          database='movie_Recommender',
-                                          user='root',
-                                          password=password)  # zijian
+                                         database='movie_Recommender',
+                                         user=config.user,
+                                         password=config.password)
     #  auth_plugin='mysql_native_password', # V
     #  password='leoJ0205') # V
     if connection2.is_connected():
@@ -48,9 +49,9 @@ except Error as e:
 
 try:
     connection3 = mysql.connector.connect(host='localhost',
-                                          database='movie_Recommender',
-                                          user='root',
-                                          password=password)  # zijian
+                                         database='movie_Recommender',
+                                         user=config.user,
+                                         password=config.password)  # zijian
     #  auth_plugin='mysql_native_password', # V
     #  password='leoJ0205') # V
     if connection3.is_connected():

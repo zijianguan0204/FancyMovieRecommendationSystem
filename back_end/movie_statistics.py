@@ -13,11 +13,10 @@ class MovieStatistics:
         self.__total = {}
         try:
             self.__connection_suggestion = mysql.connector.connect(host='localhost',
-                                                                   database='movie_Recommender',
-                                                                   user='root',
-                                                                   password=password)  # zijian
-            #  auth_plugin='mysql_native_password', # V
-            #  password='leoJ0205') # V
+            database='movie_Recommender',
+            user=config.user,
+            password=config.password)
+
             if self.__connection_suggestion.is_connected():
                 self.__db_Info_suggestion = self.__connection_suggestion.get_server_info()
                 self.__cursor_suggestion = self.__connection_suggestion.cursor()
@@ -69,9 +68,3 @@ class MovieStatistics:
     def get_total(self):
         return self.__total
 
-#
-# if __name__ == "__main__":
-#     m = MovieStatistics()
-#     print(m.get_cast())
-#     print(m.get_director())
-#     print(m.get_genre())
